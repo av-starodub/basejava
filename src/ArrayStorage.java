@@ -11,10 +11,6 @@ public class ArrayStorage {
         this.storage = new Resume[10000];
     }
 
-    public ArrayStorage(int length) {
-        this.storage = new Resume[length];
-    }
-
     private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].uuid)) {
@@ -25,22 +21,24 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (resume.uuid != null && size < storage.length && findIndex(resume.uuid) == -1) {
-            storage[size] = resume;
-            size++;
+        if (resume.uuid != null && size < storage.length) {
+            if (findIndex(resume.uuid) == -1) {
+                storage[size] = resume;
+                size++;
+            }
         }
     }
 
     public void delete(String uuid) {
         int indexOfResume = findIndex(uuid);
         if (indexOfResume != -1) {
-            storage[indexOfResume] = null;
             if (indexOfResume < size - 1) {
                 System.arraycopy(
                         storage, indexOfResume + 1,
                         storage, indexOfResume,
                         size - indexOfResume - 1);
             }
+            storage[size - 1] = null;
             size--;
         }
     }
