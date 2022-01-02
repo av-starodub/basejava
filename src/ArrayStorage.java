@@ -9,17 +9,15 @@ public class ArrayStorage {
 
     public ArrayStorage() {
         this.storage = new Resume[10000];
-        this.size = 0;
     }
 
     public ArrayStorage(int length) {
         this.storage = new Resume[length];
-        this.size = 0;
     }
 
-    private int find(String uuid) {
-        for (int i = 0; i < this.size; i += 1) {
-            if (uuid.equals(this.storage[i].uuid)) {
+    private int findIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(storage[i].uuid)) {
                 return i;
             }
         }
@@ -27,48 +25,44 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (find(resume.uuid) == -1) {
-            try {
-                this.storage[this.size] = resume;
-                this.size += 1;
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.printf(
-                        "%s. %s\n", e.getMessage(), "This storage is full."
-                );
-            }
+        if (resume.uuid != null && size < storage.length && findIndex(resume.uuid) == -1) {
+            storage[size] = resume;
+            size++;
         }
     }
 
     public void delete(String uuid) {
-        int indexOfResume = find(uuid);
+        int indexOfResume = findIndex(uuid);
         if (indexOfResume != -1) {
-            this.storage[indexOfResume] = null;
-            //noinspection ManualArrayCopy
-            for (int i = indexOfResume; i < this.size; i += 1) {
-                this.storage[i] = this.storage[i + 1];
+            storage[indexOfResume] = null;
+            if (indexOfResume < size - 1) {
+                System.arraycopy(
+                        storage, indexOfResume + 1,
+                        storage, indexOfResume,
+                        size - indexOfResume - 1);
             }
-            this.size -= 1;
+            size--;
         }
     }
 
     public Resume get(String uuid) {
-        int indexOfResume = find(uuid);
-        return indexOfResume != -1 ? this.storage[indexOfResume] : null;
+        int indexOfResume = findIndex(uuid);
+        return indexOfResume != -1 ? storage[indexOfResume] : null;
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOfRange(this.storage, 0, this.size);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public void clear() {
-        Arrays.fill(this.storage, 0, this.size, null);
-        this.size = 0;
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     public int size() {
-        return this.size;
+        return size;
     }
 }
