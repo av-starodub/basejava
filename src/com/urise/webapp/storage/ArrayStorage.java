@@ -17,7 +17,7 @@ public class ArrayStorage {
 
     private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (uuid.equals(storage[i].uuid)) {
+            if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }
         }
@@ -25,8 +25,8 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (resume.uuid != null && size < storage.length) {
-            if (findIndex(resume.uuid) == -1) {
+        if (resume.getUuid() != null && size < storage.length) {
+            if (findIndex(resume.getUuid()) == -1) {
                 storage[size] = resume;
                 size++;
             }
