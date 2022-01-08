@@ -62,4 +62,8 @@ public class ArrayStorage {
     public int size() {
         return size;
     }
+
+    public void update(Resume resume) {
+
+    }
 }

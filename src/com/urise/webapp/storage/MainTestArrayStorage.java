@@ -22,8 +22,18 @@ public class MainTestArrayStorage {
         System.out.printf("%s: %s\n", testResult ? "SUCCESS" : "FAIL", testDescription);
     }
 
+    private void printErrorTest(String expectedMessage) {
+        System.out.printf("Expected method message: %s \n", expectedMessage);
+        System.out.print("          Actual method message: ");
+    }
+
+    private void printTestNumber(int number) {
+        System.out.printf("Test %d: ", number);
+    }
+
     private void printSeparator() {
         System.out.println("------------------------------------");
+        System.out.println();
     }
 
     private void afterEach() {
@@ -37,11 +47,13 @@ public class MainTestArrayStorage {
         test.getTest();
         test.deleteTest();
         test.getAllTest();
+        test.updateTest();
     }
 
     private void sizeTest() {
         System.out.println("SIZE TEST");
 
+        printTestNumber(1);
         String sizeTestDescription = "Returns size field value";
         boolean sizeTestResult = ARRAY_STORAGE.size() == 0;
         printTestResult(sizeTestDescription, sizeTestResult);
@@ -52,17 +64,20 @@ public class MainTestArrayStorage {
     private void saveTest() {
         System.out.println("SAVE TEST");
 
+        printTestNumber(1);
         String firstTestDescription = "Doesn't add null to ARRAY_STORAGE";
         Resume resume = new Resume();
         ARRAY_STORAGE.save(resume);
         boolean firstTestResult = ARRAY_STORAGE.size() == 0;
         printTestResult(firstTestDescription, firstTestResult);
 
+        printTestNumber(2);
         String secondTestDescription = "Adds resume to ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         boolean secondTestResult = ARRAY_STORAGE.size() == 1;
         printTestResult(secondTestDescription, secondTestResult);
 
+        printTestNumber(3);
         String thirdTestDescription = "Doesn't add resume existing in ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         boolean thirdTestResult = ARRAY_STORAGE.size() == 1;
@@ -75,10 +90,12 @@ public class MainTestArrayStorage {
     private void getTest() {
         System.out.println("GET TEST");
 
+        printTestNumber(1);
         String firstTestDescription = "Returns null if resume doesn't exist";
         boolean firstTestResult = ARRAY_STORAGE.get(r1.getUuid()) == null;
         printTestResult(firstTestDescription, firstTestResult);
 
+        printTestNumber(2);
         String secondTestDescription = "Returns resume if it exist";
         ARRAY_STORAGE.save(r1);
         Resume resumeFromStorage = ARRAY_STORAGE.get(r1.getUuid());
@@ -92,6 +109,7 @@ public class MainTestArrayStorage {
     private void deleteTest() {
         System.out.println("DELETE TEST");
 
+        printTestNumber(1);
         String firstTestDescription = "Removes resume from ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -108,6 +126,7 @@ public class MainTestArrayStorage {
     private void getAllTest() {
         System.out.println("GETALL TEST");
 
+        printTestNumber(1);
         String testDescription = "Returns new array with all resumes from ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -116,6 +135,30 @@ public class MainTestArrayStorage {
         boolean isAll = actual.length == ARRAY_STORAGE.size();
         boolean testResult = Arrays.deepEquals(expected, actual) && isAll;
         printTestResult(testDescription, testResult);
+
+        printSeparator();
+        afterEach();
+    }
+
+    private void updateTest() {
+        System.out.println("UPDATE TEST");
+
+        printTestNumber(1);
+        String firstTestDescription = "Updates resume in ARRAY_STORAGE";
+        Resume resume = new Resume();
+        resume.setUuid("uuid");
+        ARRAY_STORAGE.save(resume);
+        Resume updated = new Resume();
+        updated.setUuid("uuid");
+        ARRAY_STORAGE.update(updated);
+        boolean testResult = ARRAY_STORAGE.get("uuid").equals(updated);
+        printTestResult(firstTestDescription, testResult);
+
+        printTestNumber(2);
+        String expectedMessage = "ERROR: No such resume in storage";
+        printErrorTest(expectedMessage);
+        ARRAY_STORAGE.update(r1);
+        System.out.println();
 
         printSeparator();
         afterEach();
