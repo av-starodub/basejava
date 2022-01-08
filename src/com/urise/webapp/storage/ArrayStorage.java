@@ -64,6 +64,11 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-
+        int indexOfResume = findIndex(resume.getUuid());
+        if (indexOfResume == -1) {
+            System.out.println("ERROR: No such resume in storage");
+        } else {
+            storage[indexOfResume] = resume;
+        }
     }
 }
