@@ -28,6 +28,10 @@ public class ArrayStorage {
         return resume.getUuid() == null;
     }
 
+    private boolean isResumeExist(int index) {
+        return index != -1;
+    }
+
     public void save(Resume resume) {
         if (isNull(resume)) {
             return;
@@ -36,7 +40,7 @@ public class ArrayStorage {
             System.out.println("ERROR: The storage is full");
             return;
         }
-        if (findIndex(resume.getUuid()) != -1) {
+        if (isResumeExist(findIndex(resume.getUuid()))) {
             System.out.println("ERROR: This resume already exists in storage");
             return;
         }
@@ -46,7 +50,7 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int indexOfResume = findIndex(uuid);
-        if (indexOfResume == -1) {
+        if (!isResumeExist(indexOfResume)) {
             System.out.println("ERROR: No such resume in storage");
             return;
         }
@@ -57,7 +61,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int indexOfResume = findIndex(uuid);
-        if (indexOfResume == -1) {
+        if (!isResumeExist(indexOfResume)) {
             System.out.println("ERROR: No such resume in storage");
             return null;
         }
@@ -85,7 +89,7 @@ public class ArrayStorage {
             return;
         }
         int indexOfResume = findIndex(resume.getUuid());
-        if (indexOfResume == -1) {
+        if (!isResumeExist(indexOfResume)) {
             System.out.println("ERROR: No such resume in storage");
             return;
         }
