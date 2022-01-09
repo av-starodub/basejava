@@ -42,11 +42,13 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int indexOfResume = findIndex(uuid);
-        if (indexOfResume != -1) {
-            storage[indexOfResume] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+        if (indexOfResume == -1) {
+            System.out.println("ERROR: No such resume in storage");
+            return;
         }
+        storage[indexOfResume] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     public Resume get(String uuid) {

@@ -147,6 +147,9 @@ public class MainTestArrayStorage {
         printTestNumber(1);
         deleteExistingResumeTest();
 
+        printTestNumber(2);
+        deleteErrorMessageTest();
+
         printSeparator();
     }
 
@@ -155,10 +158,19 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.delete(r1.getUuid());
-        boolean wasResumeDelete = ARRAY_STORAGE.get(r1.getUuid()) == null;
-        boolean wasSizeChange = ARRAY_STORAGE.size() == 1;
-        boolean testResult = wasResumeDelete && wasSizeChange;
+        boolean testResult = ARRAY_STORAGE.size() == 1;
         printTestResult(testDescription, testResult);
+        System.out.print("get(r1): ");
+        String expectedMessage = "ERROR: No such resume in storage";
+        printErrorTest(expectedMessage);
+        ARRAY_STORAGE.get(r1.getUuid());
+        afterEach();
+    }
+
+    private void deleteErrorMessageTest() {
+        String expectedMessage = "ERROR: No such resume in storage";
+        printErrorTest(expectedMessage);
+        ARRAY_STORAGE.delete(r1.getUuid());
         afterEach();
     }
 
