@@ -204,6 +204,9 @@ public class MainTestArrayStorage {
         printTestNumber(2);
         updateErrorMessageTest();
 
+        printTestNumber(3);
+        updateDoNothingWithNull();
+
         printSeparator();
     }
 
@@ -222,5 +225,16 @@ public class MainTestArrayStorage {
         String expectedMessage = "ERROR: No such resume in storage";
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.update(r1);
+    }
+
+    private void updateDoNothingWithNull() {
+        String testDescription = "Updates do nothing with null parameter";
+        Resume updated = new Resume();
+        try {
+            ARRAY_STORAGE.update(updated);
+            printTestResult(testDescription, true);
+        } catch (NullPointerException e) {
+            printTestResult(testDescription, false);
+        }
     }
 }
