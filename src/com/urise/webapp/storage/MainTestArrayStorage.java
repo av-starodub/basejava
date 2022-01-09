@@ -78,10 +78,24 @@ public class MainTestArrayStorage {
         printTestResult(secondTestDescription, secondTestResult);
 
         printTestNumber(3);
-        String thirdTestDescription = "Doesn't add resume existing in ARRAY_STORAGE";
+        String expectedExistMessage = "ERROR: This resume already exists in storage";
+        printErrorTest(expectedExistMessage);
         ARRAY_STORAGE.save(r1);
+
+        printTestNumber(4);
+        String thirdTestDescription = "Doesn't add resume existing in ARRAY_STORAGE";
         boolean thirdTestResult = ARRAY_STORAGE.size() == 1;
         printTestResult(thirdTestDescription, thirdTestResult);
+        ARRAY_STORAGE.clear();
+
+        printTestNumber(5);
+        String expectedOverflowMessage = "ERROR: The storage is full";
+        printErrorTest(expectedOverflowMessage);
+        for (int i = 0; i < 10001; i++) {
+            Resume r = new Resume();
+            r.setUuid(String.format("%d", i));
+            ARRAY_STORAGE.save(r);
+        }
 
         printSeparator();
         afterEach();

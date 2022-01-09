@@ -25,12 +25,19 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (resume.getUuid() != null && size < storage.length) {
-            if (findIndex(resume.getUuid()) == -1) {
-                storage[size] = resume;
-                size++;
-            }
+        if (resume.getUuid() == null) {
+            return;
         }
+        if (size == storage.length) {
+            System.out.println("ERROR: The storage is full");
+            return;
+        }
+        if (findIndex(resume.getUuid()) != -1) {
+            System.out.println("ERROR: This resume already exists in storage");
+            return;
+        }
+        storage[size] = resume;
+        size++;
     }
 
     public void delete(String uuid) {
