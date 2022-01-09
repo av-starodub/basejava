@@ -32,6 +32,10 @@ public class ArrayStorage {
         return index != -1;
     }
 
+    private boolean hasStorageFreeSpace() {
+        return size < storage.length;
+    }
+
     private void printResumeSearchErrorMessage(boolean isFound) {
         if (isFound) {
             System.out.println("ERROR: This resume already exists in storage");
@@ -44,7 +48,7 @@ public class ArrayStorage {
         if (isNull(resume)) {
             return;
         }
-        if (size == storage.length) {
+        if (!hasStorageFreeSpace()) {
             System.out.println("ERROR: The storage is full");
             return;
         }
