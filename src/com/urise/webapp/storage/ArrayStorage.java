@@ -51,7 +51,11 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int indexOfResume = findIndex(uuid);
-        return indexOfResume != -1 ? storage[indexOfResume] : null;
+        if (indexOfResume == -1) {
+            System.out.println("ERROR: No such resume in storage");
+            return null;
+        }
+        return storage[indexOfResume];
     }
 
     /**

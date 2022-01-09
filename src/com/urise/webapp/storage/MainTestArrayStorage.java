@@ -118,7 +118,7 @@ public class MainTestArrayStorage {
         System.out.println("GET TEST");
 
         printTestNumber(1);
-        getResumeWhichDoesNotExistTest();
+        getErrorMessageTest();
 
         printTestNumber(2);
         getReturnsExistingResume();
@@ -126,10 +126,10 @@ public class MainTestArrayStorage {
         printSeparator();
     }
 
-    private void getResumeWhichDoesNotExistTest() {
-        String testDescription = "Returns null if resume doesn't exist";
-        boolean testResult = ARRAY_STORAGE.get(r1.getUuid()) == null;
-        printTestResult(testDescription, testResult);
+    private void getErrorMessageTest() {
+        String expectedMessage = "ERROR: No such resume in storage";
+        printErrorTest(expectedMessage);
+        ARRAY_STORAGE.get(r1.getUuid());
     }
 
     private void getReturnsExistingResume() {
