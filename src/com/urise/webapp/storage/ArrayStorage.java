@@ -36,15 +36,15 @@ public class ArrayStorage {
         return size < storage.length;
     }
 
-    private void printStorageOverflowErrorMessage() {
-        System.out.println("ERROR: The storage is full");
+    private void printStorageOverflowErrorMessage(String uuid) {
+        System.out.printf("ERROR: %s not added. The storage is full\n", uuid);
     }
 
-    private void printResumeSearchErrorMessage(boolean isFound) {
+    private void printResumeSearchErrorMessage(boolean isFound, String uuid) {
         if (isFound) {
-            System.out.println("ERROR: This resume already exists in storage");
+            System.out.printf("ERROR: %s already exists in storage\n", uuid);
         } else {
-            System.out.println("ERROR: No such resume in storage");
+            System.out.printf("ERROR: %s no such in storage\n", uuid);
         }
     }
 
@@ -53,11 +53,11 @@ public class ArrayStorage {
             return;
         }
         if (!hasStorageFreeSpace()) {
-            printStorageOverflowErrorMessage();
+            printStorageOverflowErrorMessage(resume.getUuid());
             return;
         }
         if (isResumeExist(findIndex(resume.getUuid()))) {
-            printResumeSearchErrorMessage(true);
+            printResumeSearchErrorMessage(true, resume.getUuid());
             return;
         }
         storage[size] = resume;
@@ -67,7 +67,7 @@ public class ArrayStorage {
     public void delete(String uuid) {
         int indexOfResume = findIndex(uuid);
         if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false);
+            printResumeSearchErrorMessage(false, uuid);
             return;
         }
         storage[indexOfResume] = storage[size - 1];
@@ -78,7 +78,7 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         int indexOfResume = findIndex(uuid);
         if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false);
+            printResumeSearchErrorMessage(false, uuid);
             return null;
         }
         return storage[indexOfResume];
@@ -106,7 +106,7 @@ public class ArrayStorage {
         }
         int indexOfResume = findIndex(resume.getUuid());
         if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false);
+            printResumeSearchErrorMessage(false, resume.getUuid());
             return;
         }
         storage[indexOfResume] = resume;

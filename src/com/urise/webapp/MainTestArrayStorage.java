@@ -98,16 +98,18 @@ public class MainTestArrayStorage {
 
     private void saveResumeExistingErrorMessageTest() {
         ARRAY_STORAGE.save(r1);
-        String expectedMessage = "ERROR: This resume already exists in storage";
+        String expectedMessage = String.format(
+                "ERROR: %s already exists in storage", r1.getUuid()
+        );
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.save(r1);
         afterEach();
     }
 
     private void saveStorageOverflowErrorMessageTest() {
-        String expectedMessage = "ERROR: The storage is full";
+        String expectedMessage = "ERROR: 10000 not added. The storage is full";
         printErrorTest(expectedMessage);
-        for (int i = 0; i <= ARRAY_STORAGE.size(); i++) {
+        for (int i = 0; i <= 10000; i++) {
             Resume r = new Resume();
             r.setUuid(String.format("%d", i));
             ARRAY_STORAGE.save(r);
@@ -128,7 +130,9 @@ public class MainTestArrayStorage {
     }
 
     private void getErrorMessageTest() {
-        String expectedMessage = "ERROR: No such resume in storage";
+        String expectedMessage = String.format(
+                "ERROR: %s no such in storage", r1.getUuid()
+        );
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.get(r1.getUuid());
     }
@@ -162,14 +166,18 @@ public class MainTestArrayStorage {
         boolean testResult = ARRAY_STORAGE.size() == 1;
         printTestResult(testDescription, testResult);
         System.out.print("get(r1): ");
-        String expectedMessage = "ERROR: No such resume in storage";
+        String expectedMessage = String.format(
+                "ERROR: %s no such in storage", r1.getUuid()
+        );
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.get(r1.getUuid());
         afterEach();
     }
 
     private void deleteErrorMessageTest() {
-        String expectedMessage = "ERROR: No such resume in storage";
+        String expectedMessage = String.format(
+                "ERROR: %s no such in storage", r1.getUuid()
+        );
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.delete(r1.getUuid());
         afterEach();
@@ -235,7 +243,9 @@ public class MainTestArrayStorage {
     }
 
     private void updateErrorMessageTest() {
-        String expectedMessage = "ERROR: No such resume in storage";
+        String expectedMessage = String.format(
+                "ERROR: %s no such in storage", r1.getUuid()
+        );
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.update(r1);
     }
