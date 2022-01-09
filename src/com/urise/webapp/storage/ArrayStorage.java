@@ -32,6 +32,14 @@ public class ArrayStorage {
         return index != -1;
     }
 
+    private void printResumeSearchErrorMessage(boolean isFound) {
+        if (isFound) {
+            System.out.println("ERROR: This resume already exists in storage");
+        } else {
+            System.out.println("ERROR: No such resume in storage");
+        }
+    }
+
     public void save(Resume resume) {
         if (isNull(resume)) {
             return;
@@ -41,7 +49,7 @@ public class ArrayStorage {
             return;
         }
         if (isResumeExist(findIndex(resume.getUuid()))) {
-            System.out.println("ERROR: This resume already exists in storage");
+            printResumeSearchErrorMessage(true);
             return;
         }
         storage[size] = resume;
@@ -51,7 +59,7 @@ public class ArrayStorage {
     public void delete(String uuid) {
         int indexOfResume = findIndex(uuid);
         if (!isResumeExist(indexOfResume)) {
-            System.out.println("ERROR: No such resume in storage");
+            printResumeSearchErrorMessage(false);
             return;
         }
         storage[indexOfResume] = storage[size - 1];
@@ -62,7 +70,7 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         int indexOfResume = findIndex(uuid);
         if (!isResumeExist(indexOfResume)) {
-            System.out.println("ERROR: No such resume in storage");
+            printResumeSearchErrorMessage(false);
             return null;
         }
         return storage[indexOfResume];
@@ -90,7 +98,7 @@ public class ArrayStorage {
         }
         int indexOfResume = findIndex(resume.getUuid());
         if (!isResumeExist(indexOfResume)) {
-            System.out.println("ERROR: No such resume in storage");
+            printResumeSearchErrorMessage(false);
             return;
         }
         storage[indexOfResume] = resume;
