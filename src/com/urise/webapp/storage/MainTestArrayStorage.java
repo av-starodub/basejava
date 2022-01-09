@@ -23,17 +23,16 @@ public class MainTestArrayStorage {
     }
 
     private void printErrorTest(String expectedMessage) {
-        System.out.printf("Expected method message: %s \n", expectedMessage);
-        System.out.print("          Actual method message: ");
+        System.out.printf("Expected: %s \n", expectedMessage);
+        System.out.print("           Actual: ");
     }
 
     private void printTestNumber(int number) {
-        System.out.printf("Test %d: ", number);
+        System.out.printf("Test %d : ", number);
     }
 
     private void printSeparator() {
         System.out.println("------------------------------------");
-        System.out.println();
     }
 
     private void afterEach() {
@@ -54,9 +53,9 @@ public class MainTestArrayStorage {
         System.out.println("SIZE TEST");
 
         printTestNumber(1);
-        String sizeTestDescription = "Returns size field value";
-        boolean sizeTestResult = ARRAY_STORAGE.size() == 0;
-        printTestResult(sizeTestDescription, sizeTestResult);
+        String testDescription = "Returns size field value";
+        boolean testResult = ARRAY_STORAGE.size() == 0;
+        printTestResult(testDescription, testResult);
 
         printSeparator();
     }
@@ -65,39 +64,53 @@ public class MainTestArrayStorage {
         System.out.println("SAVE TEST");
 
         printTestNumber(1);
-        String firstTestDescription = "Doesn't add null to ARRAY_STORAGE";
-        Resume resume = new Resume();
-        ARRAY_STORAGE.save(resume);
-        boolean firstTestResult = ARRAY_STORAGE.size() == 0;
-        printTestResult(firstTestDescription, firstTestResult);
+        saveDoesNotAddNullTest();
 
         printTestNumber(2);
-        String secondTestDescription = "Adds resume to ARRAY_STORAGE";
-        ARRAY_STORAGE.save(r1);
-        boolean secondTestResult = ARRAY_STORAGE.size() == 1;
-        printTestResult(secondTestDescription, secondTestResult);
+        saveAddResumeTest();
 
         printTestNumber(3);
-        String expectedExistMessage = "ERROR: This resume already exists in storage";
-        printErrorTest(expectedExistMessage);
-        ARRAY_STORAGE.save(r1);
+        saveResumeExistingErrorMessageTest();
 
         printTestNumber(4);
-        String thirdTestDescription = "Doesn't add resume existing in ARRAY_STORAGE";
-        boolean thirdTestResult = ARRAY_STORAGE.size() == 1;
-        printTestResult(thirdTestDescription, thirdTestResult);
-        ARRAY_STORAGE.clear();
+        saveStorageOverflowErrorMessageTest();
 
-        printTestNumber(5);
-        String expectedOverflowMessage = "ERROR: The storage is full";
-        printErrorTest(expectedOverflowMessage);
-        for (int i = 0; i < 10001; i++) {
+        printSeparator();
+    }
+
+    private void saveDoesNotAddNullTest() {
+        String testDescription = "Doesn't add null to ARRAY_STORAGE";
+        Resume resume = new Resume();
+        ARRAY_STORAGE.save(resume);
+        boolean testResult = ARRAY_STORAGE.size() == 0;
+        printTestResult(testDescription, testResult);
+        afterEach();
+    }
+
+    private void saveAddResumeTest() {
+        String testDescription = "Adds resume to ARRAY_STORAGE";
+        ARRAY_STORAGE.save(r1);
+        boolean testResult = ARRAY_STORAGE.size() == 1;
+        printTestResult(testDescription, testResult);
+        afterEach();
+    }
+
+    private void saveResumeExistingErrorMessageTest() {
+        ARRAY_STORAGE.save(r1);
+        String expectedMessage = "ERROR: This resume already exists in storage";
+        printErrorTest(expectedMessage);
+        ARRAY_STORAGE.save(r1);
+        afterEach();
+    }
+
+    private void saveStorageOverflowErrorMessageTest() {
+        String expectedMessage = "ERROR: The storage is full";
+        printErrorTest(expectedMessage);
+        for (int i = 0; i <= ARRAY_STORAGE.size(); i++) {
             Resume r = new Resume();
             r.setUuid(String.format("%d", i));
             ARRAY_STORAGE.save(r);
         }
-
-        printSeparator();
         afterEach();
     }
 
@@ -105,18 +118,26 @@ public class MainTestArrayStorage {
         System.out.println("GET TEST");
 
         printTestNumber(1);
-        String firstTestDescription = "Returns null if resume doesn't exist";
-        boolean firstTestResult = ARRAY_STORAGE.get(r1.getUuid()) == null;
-        printTestResult(firstTestDescription, firstTestResult);
+        getResumeWhichDoesNotExistTest();
 
         printTestNumber(2);
-        String secondTestDescription = "Returns resume if it exist";
-        ARRAY_STORAGE.save(r1);
-        Resume resumeFromStorage = ARRAY_STORAGE.get(r1.getUuid());
-        boolean secondTestResult = resumeFromStorage.getUuid().equals(r1.getUuid());
-        printTestResult(secondTestDescription, secondTestResult);
+        getReturnsExistingResume();
 
         printSeparator();
+    }
+
+    private void getResumeWhichDoesNotExistTest() {
+        String testDescription = "Returns null if resume doesn't exist";
+        boolean testResult = ARRAY_STORAGE.get(r1.getUuid()) == null;
+        printTestResult(testDescription, testResult);
+    }
+
+    private void getReturnsExistingResume() {
+        String testDescription = "Returns resume if it exist";
+        ARRAY_STORAGE.save(r1);
+        Resume resumeFromStorage = ARRAY_STORAGE.get(r1.getUuid());
+        boolean testResult = resumeFromStorage.getUuid().equals(r1.getUuid());
+        printTestResult(testDescription, testResult);
         afterEach();
     }
 
@@ -124,16 +145,20 @@ public class MainTestArrayStorage {
         System.out.println("DELETE TEST");
 
         printTestNumber(1);
-        String firstTestDescription = "Removes resume from ARRAY_STORAGE";
+        deleteExistingResumeTest();
+
+        printSeparator();
+    }
+
+    private void deleteExistingResumeTest() {
+        String testDescription = "Removes resume from ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.delete(r1.getUuid());
         boolean wasResumeDelete = ARRAY_STORAGE.get(r1.getUuid()) == null;
         boolean wasSizeChange = ARRAY_STORAGE.size() == 1;
-        boolean firstTestResult = wasResumeDelete && wasSizeChange;
-        printTestResult(firstTestDescription, firstTestResult);
-
-        printSeparator();
+        boolean testResult = wasResumeDelete && wasSizeChange;
+        printTestResult(testDescription, testResult);
         afterEach();
     }
 
@@ -141,16 +166,32 @@ public class MainTestArrayStorage {
         System.out.println("GETALL TEST");
 
         printTestNumber(1);
+        getAllExistingResumesTest();
+
+        printTestNumber(2);
+        getAllReturnsEmptyArrayTest();
+
+        printSeparator();
+    }
+
+    private void getAllExistingResumesTest() {
         String testDescription = "Returns new array with all resumes from ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
-        Resume[] actual = ARRAY_STORAGE.getAll();
-        Resume[] expected = {r1, r2};
-        boolean isAll = actual.length == ARRAY_STORAGE.size();
-        boolean testResult = Arrays.deepEquals(expected, actual) && isAll;
+        Resume[] actualArray = ARRAY_STORAGE.getAll();
+        Resume[] expectedArray = {r1, r2};
+        boolean isAll = actualArray.length == ARRAY_STORAGE.size();
+        boolean testResult = Arrays.deepEquals(expectedArray, actualArray) && isAll;
         printTestResult(testDescription, testResult);
+        afterEach();
+    }
 
-        printSeparator();
+    private void getAllReturnsEmptyArrayTest() {
+        String testDescription = "Returns empty array for empty ARRAY_STORAGE";
+        Resume[] actualArray = ARRAY_STORAGE.getAll();
+        int expectedArrayLength = 0;
+        boolean testResult = actualArray.length == expectedArrayLength;
+        printTestResult(testDescription, testResult);
         afterEach();
     }
 
@@ -158,23 +199,28 @@ public class MainTestArrayStorage {
         System.out.println("UPDATE TEST");
 
         printTestNumber(1);
-        String firstTestDescription = "Updates resume in ARRAY_STORAGE";
-        Resume resume = new Resume();
-        resume.setUuid("uuid");
-        ARRAY_STORAGE.save(resume);
-        Resume updated = new Resume();
-        updated.setUuid("uuid");
-        ARRAY_STORAGE.update(updated);
-        boolean testResult = ARRAY_STORAGE.get("uuid").equals(updated);
-        printTestResult(firstTestDescription, testResult);
+        updateExistingResumeTest();
 
         printTestNumber(2);
+        updateErrorMessageTest();
+
+        printSeparator();
+    }
+
+    private void updateExistingResumeTest() {
+        String testDescription = "Updates existing resume in ARRAY_STORAGE";
+        ARRAY_STORAGE.save(r1);
+        Resume updated = new Resume();
+        updated.setUuid("uuid1");
+        ARRAY_STORAGE.update(updated);
+        boolean testResult = ARRAY_STORAGE.get("uuid1").equals(updated);
+        printTestResult(testDescription, testResult);
+        afterEach();
+    }
+
+    private void updateErrorMessageTest() {
         String expectedMessage = "ERROR: No such resume in storage";
         printErrorTest(expectedMessage);
         ARRAY_STORAGE.update(r1);
-        System.out.println();
-
-        printSeparator();
-        afterEach();
     }
 }
