@@ -24,8 +24,12 @@ public class ArrayStorage {
         return -1;
     }
 
+    private boolean isNull(Resume resume) {
+        return resume.getUuid() == null;
+    }
+
     public void save(Resume resume) {
-        if (resume.getUuid() == null) {
+        if (isNull(resume)) {
             return;
         }
         if (size == storage.length) {
@@ -77,7 +81,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if (resume.getUuid() == null) {
+        if (isNull(resume)) {
             return;
         }
         int indexOfResume = findIndex(resume.getUuid());

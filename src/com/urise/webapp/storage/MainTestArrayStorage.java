@@ -240,7 +240,7 @@ public class MainTestArrayStorage {
     }
 
     private void updateDoNothingWithNull() {
-        String testDescription = "Updates do nothing with null parameter";
+        String testDescription = "Method do nothing with null parameter";
         Resume updated = new Resume();
         try {
             ARRAY_STORAGE.update(updated);
