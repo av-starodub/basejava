@@ -52,12 +52,13 @@ public class ArrayStorage {
         if (isNull(resume)) {
             return;
         }
+        String uuid = resume.getUuid();
         if (!hasStorageFreeSpace()) {
-            printStorageOverflowErrorMessage(resume.getUuid());
+            printStorageOverflowErrorMessage(uuid);
             return;
         }
-        if (isResumeExist(findIndex(resume.getUuid()))) {
-            printResumeSearchErrorMessage(true, resume.getUuid());
+        if (isResumeExist(findIndex(uuid))) {
+            printResumeSearchErrorMessage(true, uuid);
             return;
         }
         storage[size] = resume;
@@ -70,8 +71,8 @@ public class ArrayStorage {
             printResumeSearchErrorMessage(false, uuid);
             return;
         }
-        storage[indexOfResume] = storage[size - 1];
         size--;
+        storage[indexOfResume] = storage[size];
         storage[size] = null;
     }
 
@@ -104,9 +105,10 @@ public class ArrayStorage {
         if (isNull(resume)) {
             return;
         }
-        int indexOfResume = findIndex(resume.getUuid());
+        String uuid = resume.getUuid();
+        int indexOfResume = findIndex(uuid);
         if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false, resume.getUuid());
+            printResumeSearchErrorMessage(false, uuid);
             return;
         }
         storage[indexOfResume] = resume;
