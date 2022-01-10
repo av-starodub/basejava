@@ -72,6 +72,7 @@ public abstract class AbstractArrayStorage implements Storage {
             return;
         }
         insert(resume);
+        size++;
     }
 
     public void delete(String uuid) {
@@ -81,6 +82,19 @@ public abstract class AbstractArrayStorage implements Storage {
             return;
         }
         remove(indexOfResume);
+    }
+
+    public void update(Resume resume) {
+        if (isNull(resume)) {
+            return;
+        }
+        String uuid = resume.getUuid();
+        int indexOfResume = getIndex(uuid);
+        if (!isResumeExist(indexOfResume)) {
+            printResumeSearchErrorMessage(false, uuid);
+            return;
+        }
+        insert(resume);
     }
 
     protected abstract int getIndex(String uuid);

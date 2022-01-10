@@ -22,25 +22,11 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     protected void insert(Resume resume) {
         storage[size] = resume;
-        size++;
     }
 
     protected void remove(int index) {
         size--;
         storage[index] = storage[size];
         storage[size] = null;
-    }
-
-    public void update(Resume resume) {
-        if (isNull(resume)) {
-            return;
-        }
-        String uuid = resume.getUuid();
-        int indexOfResume = getIndex(uuid);
-        if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false, uuid);
-            return;
-        }
-        storage[indexOfResume] = resume;
     }
 }
