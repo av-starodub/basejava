@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.storage.ArrayStorage;
 import java.util.Arrays;
 
 /**
- * Test for your com.urise.webapp.storage.ArrayStorage implementation
+ * Test for ru.javawebinar.basejava.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
     private final ArrayStorage ARRAY_STORAGE;
