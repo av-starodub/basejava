@@ -20,19 +20,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    public void save(Resume resume) {
-        if (isNull(resume)) {
-            return;
-        }
-        String uuid = resume.getUuid();
-        if (!hasStorageFreeSpace()) {
-            printStorageOverflowErrorMessage(uuid);
-            return;
-        }
-        if (isResumeExist(getIndex(uuid))) {
-            printResumeSearchErrorMessage(true, uuid);
-            return;
-        }
+    protected void insert(Resume resume) {
         storage[size] = resume;
         size++;
     }
