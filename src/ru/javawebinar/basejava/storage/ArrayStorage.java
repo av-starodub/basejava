@@ -7,12 +7,13 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage {
+    private static final int STORAGE_LIMIT = 10000;
     private final Resume[] storage;
     private int size;
 
     public ArrayStorage() {
-        this.storage = new Resume[10000];
+        this.storage = new Resume[STORAGE_LIMIT];
     }
 
     private int findIndex(String uuid) {
