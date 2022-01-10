@@ -25,14 +25,9 @@ public class ArrayStorage extends AbstractArrayStorage {
         size++;
     }
 
-    public void delete(String uuid) {
-        int indexOfResume = getIndex(uuid);
-        if (!isResumeExist(indexOfResume)) {
-            printResumeSearchErrorMessage(false, uuid);
-            return;
-        }
+    protected void remove(int index) {
         size--;
-        storage[indexOfResume] = storage[size];
+        storage[index] = storage[size];
         storage[size] = null;
     }
 

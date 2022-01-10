@@ -74,7 +74,18 @@ public abstract class AbstractArrayStorage implements Storage {
         insert(resume);
     }
 
+    public void delete(String uuid) {
+        int indexOfResume = getIndex(uuid);
+        if (!isResumeExist(indexOfResume)) {
+            printResumeSearchErrorMessage(false, uuid);
+            return;
+        }
+        remove(indexOfResume);
+    }
+
     protected abstract int getIndex(String uuid);
 
     protected abstract void insert(Resume resume);
+
+    protected abstract void remove(int index);
 }
