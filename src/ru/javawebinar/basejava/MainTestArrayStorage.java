@@ -2,19 +2,22 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.ArrayStorage;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.storage.Storage;
 
 import java.util.Arrays;
 
 /**
  * Test for ru.javawebinar.basejava.storage.ArrayStorage
+ *          ru.javawebinar.basejava.storage.SortedArrayStorage
  */
 public class MainTestArrayStorage {
-    private final ArrayStorage ARRAY_STORAGE;
+    private final Storage ARRAY_STORAGE;
     private final Resume r1 = new Resume();
     private final Resume r2 = new Resume();
 
-    public MainTestArrayStorage() {
-        ARRAY_STORAGE = new ArrayStorage();
+    public MainTestArrayStorage(Storage storage) {
+        ARRAY_STORAGE = storage;
         r1.setUuid("uuid1");
         r2.setUuid("uuid2");
     }
@@ -29,25 +32,34 @@ public class MainTestArrayStorage {
     }
 
     private void printTestNumber(int number) {
-        System.out.printf("Test %d : ", number);
+        System.out.printf("\nTest %d : ", number);
     }
 
     private void printSeparator() {
-        System.out.println("------------------------------------");
+        System.out.println("\n------------------------------------\n");
     }
 
     private void afterEach() {
         ARRAY_STORAGE.clear();
     }
 
+    private void runTests(String className) {
+        System.out.printf("\nSTART %s tests", className);
+        printSeparator();
+
+        sizeTest();
+        saveTest();
+        getTest();
+        deleteTest();
+        getAllTest();
+        updateTest();
+
+        System.out.printf("FINISH %s tests\n", className);
+    }
+
     public static void main(String[] args) {
-        MainTestArrayStorage test = new MainTestArrayStorage();
-        test.sizeTest();
-        test.saveTest();
-        test.getTest();
-        test.deleteTest();
-        test.getAllTest();
-        test.updateTest();
+        new MainTestArrayStorage(new ArrayStorage()).runTests("ArrayStorage");
+        new MainTestArrayStorage(new SortedArrayStorage()).runTests("SortedArrayStorage");
     }
 
     private void sizeTest() {
