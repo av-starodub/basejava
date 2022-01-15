@@ -17,11 +17,11 @@ public class ArrayStorage extends AbstractArrayStorage {
                 return i;
             }
         }
-        return -1;
+        return size;
     }
 
-    protected void insert(Resume resume) {
-        storage[size] = resume;
+    protected void insert(Resume resume, int insertionPoint) {
+        storage[insertionPoint] = resume;
     }
 
     protected void remove(int index) {
