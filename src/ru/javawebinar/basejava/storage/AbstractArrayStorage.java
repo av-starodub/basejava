@@ -9,12 +9,16 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage;
     protected int size;
 
+    public AbstractArrayStorage() {
+        this.storage = new Resume[STORAGE_LIMIT];
+    }
+
     private boolean isNull(Resume resume) {
         return resume.getUuid() == null;
     }
 
     private boolean isResumeExist(int index) {
-        return index >= 0 && index < size;
+        return index >= 0;
     }
 
     private boolean hasStorageFreeSpace() {
@@ -72,8 +76,7 @@ public abstract class AbstractArrayStorage implements Storage {
             printResumeSearchErrorMessage(true, uuid);
             return;
         }
-        int insertionPoint = index < 0 ? -(index + 1) : size;
-        insert(resume, insertionPoint);
+        insert(resume, index);
         size++;
     }
 
@@ -83,7 +86,9 @@ public abstract class AbstractArrayStorage implements Storage {
             printResumeSearchErrorMessage(false, uuid);
             return;
         }
+        size--;
         remove(resumeIndex);
+        storage[size] = null;
     }
 
     public void update(Resume resume) {

@@ -9,10 +9,6 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    public SortedArrayStorage() {
-        this.storage = new Resume[STORAGE_LIMIT];
-    }
-
     @Override
     protected int getIndex(String uuid) {
         Resume r = new Resume();
@@ -22,20 +18,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insert(Resume resume, int insertionPoint) {
-        System.arraycopy(storage, insertionPoint,
-                storage, insertionPoint + 1,
-                size - insertionPoint
-        );
-        storage[insertionPoint] = resume;
+        int index = -(insertionPoint + 1);
+        System.arraycopy(storage, index, storage, index + 1, size - index);
+        storage[index] = resume;
     }
 
     @Override
     protected void remove(int resumeIndex) {
-        System.arraycopy(storage, resumeIndex + 1,
-                storage, resumeIndex,
-                size - resumeIndex - 1
-        );
-        size--;
-        storage[size] = null;
+        System.arraycopy(storage, resumeIndex + 1, storage, resumeIndex, size - resumeIndex);
     }
 }
