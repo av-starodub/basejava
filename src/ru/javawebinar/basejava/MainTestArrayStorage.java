@@ -9,17 +9,17 @@ import java.util.Arrays;
 
 /**
  * Test for ru.javawebinar.basejava.storage.ArrayStorage
- *          ru.javawebinar.basejava.storage.SortedArrayStorage
+ * ru.javawebinar.basejava.storage.SortedArrayStorage
  */
 public class MainTestArrayStorage {
     private final Storage ARRAY_STORAGE;
-    private final Resume r1 = new Resume();
-    private final Resume r2 = new Resume();
+    private final Resume r1;
+    private final Resume r2;
 
     public MainTestArrayStorage(Storage storage) {
         ARRAY_STORAGE = storage;
-        r1.setUuid("uuid1");
-        r2.setUuid("uuid2");
+        r1 = new Resume("uuid1");
+        r2 = new Resume("uuid2");
     }
 
     private void printTestResult(String testDescription, boolean testResult) {
@@ -122,8 +122,7 @@ public class MainTestArrayStorage {
         String expectedMessage = "ERROR: 10000 not added. The storage is full";
         printErrorTest(expectedMessage);
         for (int i = 0; i <= 10000; i++) {
-            Resume r = new Resume();
-            r.setUuid(String.format("%d", i));
+            Resume r = new Resume(String.format("%d", i));
             ARRAY_STORAGE.save(r);
         }
         afterEach();
@@ -237,17 +236,13 @@ public class MainTestArrayStorage {
         printTestNumber(2);
         updateErrorMessageTest();
 
-        printTestNumber(3);
-        updateDoNothingWithNull();
-
         printSeparator();
     }
 
     private void updateExistingResumeTest() {
         String testDescription = "Updates existing resume in ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
-        Resume updated = new Resume();
-        updated.setUuid("uuid1");
+        Resume updated = new Resume("uuid1");
         ARRAY_STORAGE.update(updated);
         boolean testResult = ARRAY_STORAGE.get("uuid1").equals(updated);
         printTestResult(testDescription, testResult);
@@ -262,14 +257,4 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.update(r1);
     }
 
-    private void updateDoNothingWithNull() {
-        String testDescription = "Method do nothing with null parameter";
-        Resume updated = new Resume();
-        try {
-            ARRAY_STORAGE.update(updated);
-            printTestResult(testDescription, true);
-        } catch (NullPointerException e) {
-            printTestResult(testDescription, false);
-        }
-    }
 }
