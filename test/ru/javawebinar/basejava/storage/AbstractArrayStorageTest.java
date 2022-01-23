@@ -31,35 +31,35 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void sizeShouldReturnStorageFieldValue() {
+    public void compareActualSize() {
         assertEquals(3, storage.size());
     }
 
     @Test
-    public void clearShouldAssignNullToCellsWithResume() {
+    public void checkStorageIsEmptyAfterClear() {
         storage.clear();
         assertArrayEquals(new Resume[0], storage.getAll());
         assertEquals(0, storage.size());
     }
 
     @Test
-    public void getAllShouldReturnAllResumesFromStorage() {
+    public void checkThatActualArrayContainsAllResumesFromTheStorage() {
         Resume[] expected = {r1, r2, r3};
         assertArrayEquals(expected, storage.getAll());
     }
 
     @Test
-    public void getShouldReturnExistingResume() {
+    public void compareTheReceivedResumeWithExistingInStorage() {
         assertEquals(r1, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void getNotExistingResumeShouldThrowException() {
+    public void checkFailureGetNonExistentResume() {
         storage.get("dummy");
     }
 
     @Test
-    public void saveShouldAddResumeNotExistingInStorage() {
+    public void checkThatNonExistentResumeIsAdded() {
         Resume r = new Resume("uuid4");
         storage.save(r);
         assertEquals(r, storage.get("uuid4"));
@@ -67,21 +67,24 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void saveExistingResumeShouldThrowException() {
+    public void checkFailureAddExistingResume() {
         storage.save(r1);
     }
 
     @Test(expected = StorageException.class)
-    public void saveToFullStorageShouldThrowException() {
-        for (int i = 0; i < 10000; i++) {
-            storage.save(new Resume(String.valueOf(i)));
+    public void checkThatExceptionThrowsWhenAddResumeToFullStorageOnly() {
+        for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+            try {
+                storage.save(new Resume(String.valueOf(i)));
+            } catch (StorageException se) {
+                fail("Overflow happened ahead of time");
+            }
         }
-        fail("Overflow happened ahead of time");
         storage.save(new Resume("dummy"));
     }
 
     @Test
-    public void deleteShouldRemoveExistingResume() {
+    public void checkThatExistingResumeIsRemoved() {
         storage.delete("uuid2");
         Resume[] expected = {r1, r3};
         assertArrayEquals(expected, storage.getAll());
@@ -89,19 +92,19 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void deleteNotExistingResumeShouldThrowException() {
+    public void checkFailureRemoveNonExistentResume() {
         storage.delete("dummy");
     }
 
     @Test
-    public void updateShouldAddExistingResume() {
+    public void checkThatExistingResumeIsUpdated() {
         Resume r = new Resume("uuid1");
         storage.update(r);
         assertEquals(r, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void updateNotExistingResumeShouldThrowException() {
+    public void checkFailureUpdateNonExistentResume() {
         storage.update(new Resume("dummy"));
     }
 }
