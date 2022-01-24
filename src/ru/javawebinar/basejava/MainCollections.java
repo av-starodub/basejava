@@ -1,0 +1,59 @@
+package ru.javawebinar.basejava;
+
+import ru.javawebinar.basejava.model.Resume;
+
+import java.util.*;
+
+public class MainCollections {
+    private static final String UUID_1 = "uuid1";
+    private static final Resume RESUME_1 = new Resume(UUID_1);
+
+    private static final String UUID_2 = "uuid2";
+    private static final Resume RESUME_2 = new Resume(UUID_2);
+
+    private static final String UUID_3 = "uuid3";
+    private static final Resume RESUME_3 = new Resume(UUID_3);
+
+    public static void main(String[] args) {
+        Collection<Resume> collection = new ArrayList<>();
+        collection.add(RESUME_1);
+        collection.add(RESUME_2);
+        collection.add(RESUME_3);
+
+        for (Resume r : collection) {
+            System.out.printf("Current for r: %s\n", r);
+            //noinspection StatementWithEmptyBody
+            if (Objects.equals(r.getUuid(), UUID_1)) {
+//                collection.remove(r);
+            }
+        }
+        System.out.println();
+
+        Iterator<Resume> iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            Resume r = iterator.next();
+            System.out.printf("Current iter r: %s\n", r);
+            if (Objects.equals(r.getUuid(), UUID_1)) {
+                iterator.remove();
+            }
+        }
+        String collectionAsString = collection.toString();
+        System.out.printf("After remove %s\n", collectionAsString);
+
+        System.out.println();
+
+        Map<String, Resume> map = new HashMap<>();
+        map.put(UUID_1, RESUME_1);
+        map.put(UUID_2, RESUME_2);
+        map.put(UUID_3, RESUME_3);
+
+        // Bad!
+        for (String uuid : map.keySet()) {
+            System.out.println(map.get(uuid));
+        }
+
+        for (Map.Entry<String, Resume> entry : map.entrySet()) {
+            System.out.println(entry.getValue());
+        }
+    }
+}
