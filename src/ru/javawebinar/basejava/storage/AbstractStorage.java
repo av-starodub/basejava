@@ -11,47 +11,47 @@ public abstract class AbstractStorage<T> implements Storage {
         this.storage = storage;
     }
 
-    private boolean isNull(Resume resume) {
-        return resume == null;
+    private boolean isNotNull(Resume resume) {
+        return resume != null;
     }
 
-    protected boolean isResumeExist(int index) {
+    private boolean isResumeExist(int index) {
         return index >= 0;
+    }
+
+    /**
+     * @param expectationForError the result of method isResumeExist is necessary to
+     *                            throw an exception in the context of the call checkResumeExist.
+     * @return getIndex result.
+     */
+    protected int checkResumeExist(String uuid, boolean expectationForError) {
+        int indexOfResume = getIndex(uuid);
+        if (expectationForError && isResumeExist(indexOfResume)) {
+            throw new ExistStorageException(uuid);
+        }
+        if (!expectationForError && !isResumeExist(indexOfResume)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return indexOfResume;
     }
 
     @Override
     public void save(Resume resume) {
-        if (isNull(resume)) {
-            return;
+        if (isNotNull(resume)) {
+            insert(resume, checkResumeExist(resume.getUuid(), true));
         }
-        String uuid = resume.getUuid();
-        int index = getIndex(uuid);
-        if (isResumeExist(index)) {
-            throw new ExistStorageException(uuid);
-        }
-        insert(resume, index);
     }
 
     @Override
     public Resume get(String uuid) {
-        int resumeIndex = getIndex(uuid);
-        if (!isResumeExist(resumeIndex)) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getResume(resumeIndex);
+        return getResume(checkResumeExist(uuid, false));
     }
 
     @Override
     public void update(Resume resume) {
-        if (isNull(resume)) {
-            return;
+        if (isNotNull(resume)) {
+            replace(checkResumeExist(resume.getUuid(), false), resume);
         }
-        String uuid = resume.getUuid();
-        int resumeIndex = getIndex(uuid);
-        if (!isResumeExist(resumeIndex)) {
-            throw new NotExistStorageException(uuid);
-        }
-        replace(resumeIndex, resume);
     }
 
     protected abstract int getIndex(String uuid);
