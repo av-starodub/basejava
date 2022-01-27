@@ -4,7 +4,12 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<T> implements Storage {
+    protected final T storage;
+
+    protected AbstractStorage(T storage) {
+        this.storage = storage;
+    }
 
     private boolean isNull(Resume resume) {
         return resume == null;

@@ -6,11 +6,10 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
-    private final List<Resume> storage;
+public class ListStorage extends AbstractStorage<List<Resume>> {
 
     public ListStorage() {
-        storage = new ArrayList<>();
+        super(new ArrayList<>());
     }
 
     @Override

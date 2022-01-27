@@ -6,10 +6,13 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
     protected static final int STORAGE_LIMIT = 10000;
-    protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
+
+    protected AbstractArrayStorage() {
+        super(new Resume[STORAGE_LIMIT]);
+    }
 
     private boolean hasStorageFreeSpace() {
         return size < storage.length;
