@@ -1,20 +1,20 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage implements Storage {
+public class ListStorage extends AbstractStorage {
     private final List<Resume> storage;
 
     public ListStorage() {
-        storage = new ArrayList<>(10000);
+        storage = new ArrayList<>();
     }
 
-    private int getIndex(String uuid) {
+    @Override
+    protected int getIndex(String uuid) {
         int index = 0;
         for (Resume resume : storage) {
             if (resume.getUuid().equals(uuid)) {
@@ -26,36 +26,23 @@ public class ListStorage implements Storage {
     }
 
     @Override
-    public void clear() {
-        storage.clear();
+    protected Resume getResume(int index) {
+        return storage.get(index);
     }
 
     @Override
-    public void update(Resume resume) {
-        String uuid = resume.getUuid();
-        int index = getIndex(uuid);
-        if (index == -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        storage.add(index, resume);
-    }
-
-    @Override
-    public void save(Resume resume) {
-        String uuid = resume.getUuid();
-        if (getIndex(uuid) != -1) {
-            throw new ExistStorageException(uuid);
-        }
+    protected void insert(Resume resume, int index) {
         storage.add(resume);
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage.get(index);
+    protected void replace(int index, Resume resume) {
+        storage.add(index, resume);
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
     }
 
     @Override
