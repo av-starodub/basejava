@@ -47,9 +47,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
 
     @Override
     public void delete(String uuid) {
-        int resumeIndex = checkResumeExist(uuid, false);
         size--;
-        remove(resumeIndex);
+        super.delete(uuid);
         storage[size] = null;
     }
 
@@ -62,6 +61,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
     protected Resume getResume(int index) {
         return storage[index];
     }
-
-    protected abstract void remove(int resumeIndex);
 }

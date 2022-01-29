@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
@@ -10,6 +9,26 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
 
     public ListStorage() {
         super(new ArrayList<>());
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return storage.toArray(Resume[]::new);
+    }
+
+    @Override
+    protected Resume getResume(int index) {
+        return storage.get(index);
     }
 
     @Override
@@ -25,11 +44,6 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return storage.get(index);
-    }
-
-    @Override
     protected void insert(Resume resume, int index) {
         storage.add(resume);
     }
@@ -40,24 +54,7 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     }
 
     @Override
-    public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    public void delete(String uuid) {
-        if (!storage.removeIf(resume -> resume.getUuid().equals(uuid))) {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.toArray(Resume[]::new);
-    }
-
-    @Override
-    public int size() {
-        return storage.size();
+    protected void remove(int index) {
+        storage.remove(index);
     }
 }

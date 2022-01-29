@@ -24,7 +24,7 @@ public abstract class AbstractStorage<T> implements Storage {
      *                            throw an exception in the context of the call checkResumeExist.
      * @return getIndex result.
      */
-    protected int checkResumeExist(String uuid, boolean expectationForError) {
+    private int checkResumeExist(String uuid, boolean expectationForError) {
         int indexOfResume = getIndex(uuid);
         if (expectationForError && isResumeExist(indexOfResume)) {
             throw new ExistStorageException(uuid);
@@ -42,6 +42,10 @@ public abstract class AbstractStorage<T> implements Storage {
         }
     }
 
+    @Override
+    public void delete(String uuid) {
+        remove(checkResumeExist(uuid, false));
+    }
     @Override
     public Resume get(String uuid) {
         return getResume(checkResumeExist(uuid, false));
@@ -61,4 +65,6 @@ public abstract class AbstractStorage<T> implements Storage {
     protected abstract void insert(Resume resume, int index);
 
     protected abstract void replace(int index, Resume resume);
+
+    protected abstract void remove(int index);
 }
