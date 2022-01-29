@@ -6,6 +6,8 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +32,10 @@ public abstract class AbstractStorageTest {
         storage.save(r3);
     }
 
+    private void compareArrays(Resume[] expected, Resume[] actual) {
+        Arrays.sort(actual);
+        assertArrayEquals(expected, actual);
+    }
     @Test
     public void compareActualSize() {
         assertEquals(3, storage.size());
@@ -43,8 +49,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatActualArrayContainsAllResumesFromTheStorage() {
-        Resume[] expected = {r1, r2, r3};
-        assertArrayEquals(expected, storage.getAll());
+        compareArrays(new Resume[]{r1, r2, r3}, storage.getAll());
     }
 
     @Test
@@ -65,8 +70,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void checkThatExistingResumeIsRemoved() {
         storage.delete("uuid2");
-        Resume[] expected = {r1, r3};
-        assertArrayEquals(expected, storage.getAll());
+        compareArrays(new Resume[]{r1, r3}, storage.getAll());
     }
 
     @Test(expected = NotExistStorageException.class)
