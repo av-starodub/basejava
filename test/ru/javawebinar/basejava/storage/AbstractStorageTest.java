@@ -36,6 +36,7 @@ public abstract class AbstractStorageTest {
         Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
+
     @Test
     public void compareActualSize() {
         assertEquals(3, storage.size());
@@ -45,6 +46,7 @@ public abstract class AbstractStorageTest {
     public void checkStorageIsEmptyAfterClear() {
         storage.clear();
         assertArrayEquals(new Resume[0], storage.getAll());
+        assertEquals(0, storage.size());
     }
 
     @Test
@@ -62,6 +64,14 @@ public abstract class AbstractStorageTest {
         storage.get("dummy");
     }
 
+    @Test
+    public void checkThatNonExistentResumeIsAdded() {
+        Resume r = new Resume("uuid4");
+        storage.save(r);
+        assertEquals(r, storage.get("uuid4"));
+        assertEquals(4, storage.size());
+    }
+
     @Test(expected = ExistStorageException.class)
     public void checkFailureAddExistingResume() {
         storage.save(r1);
@@ -71,6 +81,7 @@ public abstract class AbstractStorageTest {
     public void checkThatExistingResumeIsRemoved() {
         storage.delete("uuid2");
         compareArrays(new Resume[]{r1, r3}, storage.getAll());
+        assertEquals(2, storage.size());
     }
 
     @Test(expected = NotExistStorageException.class)
