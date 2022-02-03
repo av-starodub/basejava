@@ -19,9 +19,9 @@ public abstract class AbstractStorageTest {
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
-        r1 = new Resume("uuid1");
-        r2 = new Resume("uuid2");
-        r3 = new Resume("uuid3");
+        r1 = new Resume("uuid1","First");
+        r2 = new Resume("uuid2", "Second");
+        r3 = new Resume("uuid3", "Third");
     }
 
     @Before
@@ -66,7 +66,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatNonExistentResumeIsAdded() {
-        Resume r = new Resume("uuid4");
+        Resume r = new Resume("uuid4", "Fourth");
         storage.save(r);
         assertEquals(r, storage.get("uuid4"));
         assertEquals(4, storage.size());
@@ -91,7 +91,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatExistingResumeIsUpdated() {
-        Resume r = new Resume("uuid1");
+        Resume r = new Resume("uuid1", "dummy");
         storage.update(r);
         assertEquals(r, storage.get("uuid1"));
     }

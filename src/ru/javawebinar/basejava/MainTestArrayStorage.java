@@ -93,8 +93,7 @@ public class MainTestArrayStorage {
 
     private void saveDoesNotAddNullTest() {
         String testDescription = "Doesn't add null to ARRAY_STORAGE";
-        Resume resume = new Resume();
-        ARRAY_STORAGE.save(resume);
+        ARRAY_STORAGE.save(null);
         boolean testResult = ARRAY_STORAGE.size() == 0;
         printTestResult(testDescription, testResult);
         afterEach();
