@@ -209,7 +209,7 @@ public class MainTestArrayStorage {
         String testDescription = "Returns new array with all resumes from ARRAY_STORAGE";
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
-        Resume[] actualArray = ARRAY_STORAGE.getAll();
+        Resume[] actualArray = ARRAY_STORAGE.getAllSorted().toArray(new Resume[ARRAY_STORAGE.size()]);
         Resume[] expectedArray = {r1, r2};
         boolean isAll = actualArray.length == ARRAY_STORAGE.size();
         boolean testResult = Arrays.deepEquals(expectedArray, actualArray) && isAll;
@@ -219,7 +219,7 @@ public class MainTestArrayStorage {
 
     private void getAllReturnsEmptyArrayTest() {
         String testDescription = "Returns empty array for empty ARRAY_STORAGE";
-        Resume[] actualArray = ARRAY_STORAGE.getAll();
+        Resume[] actualArray = ARRAY_STORAGE.getAllSorted().toArray(new Resume[ARRAY_STORAGE.size()]);
         int expectedArrayLength = 0;
         boolean testResult = actualArray.length == expectedArrayLength;
         printTestResult(testDescription, testResult);

@@ -22,11 +22,6 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(Resume[]::new);
-    }
-
-    @Override
     protected Resume getResume(int index) {
         return storage.get(index);
     }
@@ -56,5 +51,10 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     @Override
     protected void remove(int index) {
         storage.remove(index);
+    }
+
+    @Override
+    protected List<Resume> getAll() {
+        return new ArrayList<>(storage.subList(0, size()));
     }
 }

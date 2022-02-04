@@ -2,7 +2,9 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MapStorage extends AbstractStorage<HashMap<Integer, Resume>> {
     protected MapStorage() {
@@ -20,8 +22,12 @@ public class MapStorage extends AbstractStorage<HashMap<Integer, Resume>> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(Resume[]::new);
+    protected int getIndex(String uuid) {
+        Resume r = storage.get(uuid.hashCode());
+        if (r != null) {
+            return r.hashCode();
+        }
+        return -1;
     }
 
     @Override
@@ -30,12 +36,8 @@ public class MapStorage extends AbstractStorage<HashMap<Integer, Resume>> {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume r = storage.get(uuid.hashCode());
-        if (r != null) {
-            return r.hashCode();
-        }
-        return -1;
+    protected List<Resume> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
