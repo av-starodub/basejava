@@ -6,8 +6,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
@@ -109,7 +108,7 @@ public abstract class AbstractStorageTest {
     public void checkThatExistingResumeIsUpdated() {
         Resume r = new Resume("uuid1", "dummy");
         storage.update(r);
-        assertEquals(r, storage.get("uuid1"));
+        assertEquals("dummy", storage.get("uuid1").getFullName());
     }
 
     @Test(expected = NotExistStorageException.class)

@@ -5,7 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage<List<Resume>> {
+public class ListStorage extends AbstractStorage<List<Resume>, Integer> {
 
     public ListStorage() {
         super(new ArrayList<>());
@@ -22,12 +22,12 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     }
 
     @Override
-    protected Resume getResume(int index) {
+    protected Resume getResume(Integer index) {
         return storage.get(index);
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         int index = 0;
         for (Resume resume : storage) {
             if (resume.getUuid().equals(uuid)) {
@@ -39,18 +39,23 @@ public class ListStorage extends AbstractStorage<List<Resume>> {
     }
 
     @Override
-    protected void insert(Resume resume, int index) {
+    protected void insert(Resume resume, Integer index) {
         storage.add(resume);
     }
 
     @Override
-    protected void replace(int index, Resume resume) {
+    protected void replace(Integer index, Resume resume) {
         storage.add(index, resume);
     }
 
     @Override
-    protected void remove(int index) {
-        storage.remove(index);
+    protected void remove(Integer index) {
+        storage.remove((int) index);
+    }
+
+    @Override
+    protected boolean isResumeExist(Integer index) {
+        return index >= 0;
     }
 
     @Override

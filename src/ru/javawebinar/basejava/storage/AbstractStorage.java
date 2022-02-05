@@ -6,19 +6,15 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.List;
 
-public abstract class AbstractStorage<T> implements Storage {
+public abstract class AbstractStorage<T, K> implements Storage {
     protected final T storage;
 
     protected AbstractStorage(T storage) {
         this.storage = storage;
     }
 
-    private boolean isNotNull(Resume resume) {
+    protected boolean isNotNull(Resume resume) {
         return resume != null;
-    }
-
-    private boolean isResumeExist(int index) {
-        return index >= 0;
     }
 
     /**
@@ -26,15 +22,15 @@ public abstract class AbstractStorage<T> implements Storage {
      *                            throw an exception in the context of the call checkResumeExist.
      * @return getIndex result.
      */
-    private int checkResumeExist(String uuid, boolean expectationForError) {
-        int indexOfResume = getIndex(uuid);
-        if (expectationForError && isResumeExist(indexOfResume)) {
+    private K checkResumeExist(String uuid, boolean expectationForError) {
+        K searchKey = getSearchKey(uuid);
+        if (expectationForError && isResumeExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        if (!expectationForError && !isResumeExist(indexOfResume)) {
+        if (!expectationForError && !isResumeExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return indexOfResume;
+        return searchKey;
     }
 
     @Override
@@ -68,15 +64,17 @@ public abstract class AbstractStorage<T> implements Storage {
         return resumes;
     }
 
-    protected abstract int getIndex(String uuid);
+    protected abstract K getSearchKey(String uuid);
 
-    protected abstract Resume getResume(int index);
+    protected abstract Resume getResume(K searchKey);
 
     protected abstract List<Resume> getAll();
 
-    protected abstract void insert(Resume resume, int index);
+    protected abstract void insert(Resume resume, K insertKey);
 
-    protected abstract void replace(int index, Resume resume);
+    protected abstract void replace(K searchKey, Resume resume);
 
-    protected abstract void remove(int index);
+    protected abstract void remove(K searchKey);
+
+    protected abstract boolean isResumeExist(K searchKey);
 }

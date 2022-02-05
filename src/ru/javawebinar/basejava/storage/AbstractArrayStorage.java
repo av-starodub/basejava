@@ -5,7 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
+public abstract class AbstractArrayStorage extends AbstractStorage<Resume[], Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected int size;
 
@@ -45,12 +45,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
     }
 
     @Override
-    protected void replace(int index, Resume resume) {
+    protected boolean isResumeExist(Integer index) {
+        return index >= 0;
+    }
+
+    @Override
+    protected void replace(Integer index, Resume resume) {
         storage[index] = resume;
     }
 
     @Override
-    protected Resume getResume(int index) {
+    protected Resume getResume(Integer index) {
         return storage[index];
     }
 
@@ -61,5 +66,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
     public List<Resume> getAll() {
         return new ArrayList<>(Arrays.asList(storage).subList(0, size));
     }
-
 }
