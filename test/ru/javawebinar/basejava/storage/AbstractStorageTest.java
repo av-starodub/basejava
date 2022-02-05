@@ -8,6 +8,9 @@ import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.Assert.*;
 
+/**
+ * Base class to test all Storage types.
+ */
 public abstract class AbstractStorageTest {
     protected final Storage storage;
     protected final Resume r1;

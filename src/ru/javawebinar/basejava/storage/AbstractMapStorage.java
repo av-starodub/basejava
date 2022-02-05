@@ -3,11 +3,16 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractMapStorage<K> extends AbstractStorage<HashMap<K, Resume>, K> {
-    protected AbstractMapStorage(HashMap<K, Resume> storage) {
+/**
+ * Base class for all Map type storage.
+ *
+ * @param <K> type of search key to MapStorage.
+ */
+public abstract class AbstractMapStorage<K> extends AbstractStorage<Map<K, Resume>, K> {
+    protected AbstractMapStorage(Map<K, Resume> storage) {
         super(storage);
     }
 
@@ -29,8 +34,7 @@ public abstract class AbstractMapStorage<K> extends AbstractStorage<HashMap<K, R
     @Override
     protected K getSearchKey(String uuid) {
         K searchKey = getKey(uuid);
-        Resume r = storage.get(searchKey);
-        return isNotNull(r) ? searchKey : null;
+        return isNotNull(getResume(searchKey)) ? searchKey : null;
     }
 
     protected abstract K getKey(String uuid);

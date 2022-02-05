@@ -6,6 +6,12 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.List;
 
+/**
+ * Base class for all Storage types.
+ *
+ * @param <T> Storage data structure type.
+ * @param <K> type of search key to Storage.
+ */
 public abstract class AbstractStorage<T, K> implements Storage {
     protected final T storage;
 
@@ -20,7 +26,7 @@ public abstract class AbstractStorage<T, K> implements Storage {
     /**
      * @param expectationForError the result of method isResumeExist is necessary to
      *                            throw an exception in the context of the call checkResumeExist.
-     * @return getIndex result.
+     * @return getSearchKey(String uuid) result.
      */
     private K checkResumeExist(String uuid, boolean expectationForError) {
         K searchKey = getSearchKey(uuid);

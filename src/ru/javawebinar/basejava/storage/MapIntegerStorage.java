@@ -4,6 +4,10 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
 
+/**
+ * HashMap type storage.
+ * Search key type - Integer.
+ */
 public class MapIntegerStorage extends AbstractMapStorage<Integer> {
     public MapIntegerStorage() {
         super(new HashMap<>());

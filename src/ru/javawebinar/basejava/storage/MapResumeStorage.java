@@ -5,6 +5,10 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * HashMap type Storage.
+ * Search key type - object Resume.
+ */
 public class MapResumeStorage extends AbstractMapStorage<Resume> {
     public MapResumeStorage() {
         super(new HashMap<>());

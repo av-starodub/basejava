@@ -5,6 +5,10 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
+/**
+ * Base class for all Array type Storage.
+ * Search key type - Integer.
+ */
 public abstract class AbstractArrayStorage extends AbstractStorage<Resume[], Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected int size;

@@ -5,6 +5,10 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ArrayList type Storage.
+ * Search key type - Integer.
+ */
 public class ListStorage extends AbstractStorage<List<Resume>, Integer> {
 
     public ListStorage() {
