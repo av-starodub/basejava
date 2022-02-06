@@ -111,7 +111,7 @@ public abstract class AbstractStorageTest {
     public void checkThatExistingResumeIsUpdated() {
         Resume r = new Resume("uuid1", "dummy");
         storage.update(r);
-        assertEquals("dummy", storage.get("uuid1").getFullName());
+        assertSame(r, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)

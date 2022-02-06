@@ -34,17 +34,15 @@ public abstract class AbstractMapStorage<K> extends AbstractStorage<Map<K, Resum
     @Override
     protected K getSearchKey(String uuid) {
         K searchKey = getKey(uuid);
-        return isNotNull(getResume(searchKey)) ? searchKey : null;
+        return isNotNull(storage.get(searchKey)) ? searchKey : null;
     }
 
     protected abstract K getKey(String uuid);
 
     @Override
     protected void insert(Resume resume, K key) {
-        storage.put(createKey(resume), resume);
+        storage.put(getKey(resume.getUuid()), resume);
     }
-
-    protected abstract K createKey(Resume resume);
 
     @Override
     protected void replace(K searchKey, Resume resume) {
