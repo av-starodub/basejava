@@ -3,9 +3,13 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
-public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
+/**
+ * Base class for all Array type Storage.
+ * Search key type - Integer.
+ */
+public abstract class AbstractArrayStorage extends AbstractStorage<Resume[], Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected int size;
 
@@ -28,14 +32,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
         size = 0;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
     @Override
     public void save(Resume resume) {
         if (!hasStorageFreeSpace()) {
@@ -53,12 +49,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Resume[]> {
     }
 
     @Override
-    protected void replace(int index, Resume resume) {
+    protected boolean isResumeExist(Integer index) {
+        return index >= 0;
+    }
+
+    @Override
+    protected void replace(Integer index, Resume resume) {
         storage[index] = resume;
     }
 
     @Override
-    protected Resume getResume(int index) {
+    protected Resume getResume(Integer index) {
         return storage[index];
+    }
+
+    /**
+     * @return ArrayList, contains only Resumes in storage (without null)
+     */
+    @Override
+    public List<Resume> getAll() {
+        return new ArrayList<>(Arrays.asList(storage).subList(0, size));
     }
 }

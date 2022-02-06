@@ -6,11 +6,11 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
+/**
+ * Base class to test all Storage types.
+ */
 public abstract class AbstractStorageTest {
     protected final Storage storage;
     protected final Resume r1;
@@ -19,9 +19,9 @@ public abstract class AbstractStorageTest {
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
-        r1 = new Resume("uuid1");
-        r2 = new Resume("uuid2");
-        r3 = new Resume("uuid3");
+        r1 = new Resume("uuid1", "B");
+        r2 = new Resume("uuid2", "C");
+        r3 = new Resume("uuid3", "D");
     }
 
     @Before
@@ -32,26 +32,44 @@ public abstract class AbstractStorageTest {
         storage.save(r3);
     }
 
-    private void compareArrays(Resume[] expected, Resume[] actual) {
-        Arrays.sort(actual);
+    private void compareActualSize(int expectedSize) {
+        assertEquals(expectedSize, storage.size());
+    }
+
+    private void compareActualArray(Resume... expected) {
+        Resume[] actual = storage.getAllSorted().toArray(new Resume[storage.size()]);
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void compareActualSize() {
-        assertEquals(3, storage.size());
+    public void checkActualSize() {
+        compareActualSize(3);
+    }
+
+    @Test
+    public void checkThatReturnedListContainsAllResumesFromTheStorage() {
+        compareActualArray(r1, r2, r3);
+    }
+
+    @Test
+    public void checkThatReturnedListIsSortedByName() {
+        Resume r = new Resume("uuid4", "A");
+        storage.save(r);
+        compareActualArray(r, r1, r2, r3);
+    }
+
+    @Test
+    public void checkThatResumesAreSortedByUuidIfTheirFullNamesMatch() {
+        Resume r = new Resume("uuid0", "C");
+        storage.save(r);
+        compareActualArray(r1, r, r2, r3);
     }
 
     @Test
     public void checkStorageIsEmptyAfterClear() {
         storage.clear();
-        assertArrayEquals(new Resume[0], storage.getAll());
-        assertEquals(0, storage.size());
-    }
-
-    @Test
-    public void checkThatActualArrayContainsAllResumesFromTheStorage() {
-        compareArrays(new Resume[]{r1, r2, r3}, storage.getAll());
+        compareActualArray();
+        compareActualSize(0);
     }
 
     @Test
@@ -66,10 +84,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatNonExistentResumeIsAdded() {
-        Resume r = new Resume("uuid4");
+        Resume r = new Resume("uuid4", "D");
         storage.save(r);
         assertEquals(r, storage.get("uuid4"));
-        assertEquals(4, storage.size());
+        compareActualSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
@@ -80,8 +98,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void checkThatExistingResumeIsRemoved() {
         storage.delete("uuid2");
-        compareArrays(new Resume[]{r1, r3}, storage.getAll());
-        assertEquals(2, storage.size());
+        compareActualArray(r1, r3);
+        compareActualSize(2);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -91,9 +109,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatExistingResumeIsUpdated() {
-        Resume r = new Resume("uuid1");
+        Resume r = new Resume("uuid1", "dummy");
         storage.update(r);
-        assertEquals(r, storage.get("uuid1"));
+        assertSame(r, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
