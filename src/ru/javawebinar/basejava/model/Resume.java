@@ -43,10 +43,18 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
+    /**
+     * @return Collections.unmodifiableSet.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
     public Set<Map.Entry<ContactType, String>> getContacts() {
         return contacts.getAll();
     }
 
+    /**
+     * @return Collections.unmodifiableSet. Lists which contains in ListSections is unmodifiable too.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
     public Set<Map.Entry<SectionType, Section>> getSections() {
         return sections.getAll();
     }

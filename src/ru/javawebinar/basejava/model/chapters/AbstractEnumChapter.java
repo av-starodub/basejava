@@ -2,23 +2,60 @@ package ru.javawebinar.basejava.model.chapters;
 
 import ru.javawebinar.basejava.model.interfaces.Chapter;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class AbstractEnumChapter<K extends Enum<K>, V> implements Chapter<K, V> {
-    @Override
-    public String getTitle(K key) {
-        return null;
+/**
+ * Base class for Contacts and Sections chapter of Resume
+ * and for Header and Info chapters of Item for ListItemSection.
+ *
+ * @param <K> Search key type - Enum.
+ * @param <V> any reference data type.
+ */
+
+public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapter<K, V> {
+    private final EnumMap<K, V> chapter;
+
+    protected AbstractEnumChapter(EnumMap<K, V> chapter) {
+        this.chapter = chapter;
     }
 
     @Override
-    public void addAll(EnumMap<K, V> items) {
+    public String getTitle(K key) {
+        return title(key);
+    }
 
+    protected abstract String title(K key);
+
+    @Override
+    public void addAll(EnumMap<K, V> items) {
+        this.chapter.putAll(Objects.requireNonNull(items));
     }
 
     @Override
     public Set<Map.Entry<K, V>> getAll() {
-        return null;
+        return Collections.unmodifiableSet(chapter.entrySet());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractEnumChapter<?, ?> that = (AbstractEnumChapter<?, ?>) o;
+
+        return chapter.equals(that.chapter);
+    }
+
+    @Override
+    public int hashCode() {
+        return chapter.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder chapter = new StringBuilder();
+        getAll().forEach((item) ->
+                chapter.append(getTitle(item.getKey())).append("\n").append(item.getValue()).append("\n"));
+        return chapter.toString();
     }
 }
