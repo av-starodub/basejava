@@ -33,7 +33,7 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
 
     @Override
     public Set<Map.Entry<K, V>> getAll() {
-        return Collections.unmodifiableSet(chapter.entrySet());
+        return Collections.unmodifiableMap(Objects.requireNonNull(chapter)).entrySet();
     }
 
     @Override

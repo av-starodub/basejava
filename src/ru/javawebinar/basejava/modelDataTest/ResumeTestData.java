@@ -117,24 +117,34 @@ public class ResumeTestData {
     public void checkUnmodifiableContacts() {
         Resume resume = createResume();
         for (Map.Entry<ContactType, String> contact : resume.getContacts()) {
-            contact.setValue("NEW");
+            try {
+                contact.setValue("NEW");
+            } catch (UnsupportedOperationException e) {
+                Set<Map.Entry<ContactType, String>> after = resume.getContacts();
+                doTest(
+                        Objects.equals(createResume().getContacts(), after),
+                        ResumeTestData.class.getDeclaredMethods()[6].getName()
+                );
+                return;
+            }
+            doTest(false, ResumeTestData.class.getDeclaredMethods()[6].getName());
         }
-        Set<Map.Entry<ContactType, String>> after = resume.getContacts();
-        doTest(
-                Objects.equals(createResume().getContacts(), after),
-                ResumeTestData.class.getDeclaredMethods()[6].getName()
-        );
     }
 
     public void checkUnmodifiableSections() {
         Resume resume = createResume();
         for (Map.Entry<SectionType, Section> section : resume.getSections()) {
-            section.setValue(new TextSection("NEW"));
+            try {
+                section.setValue(new TextSection("NEW"));
+            } catch (UnsupportedOperationException e) {
+                Set<Map.Entry<SectionType, Section>> after = resume.getSections();
+                doTest(
+                        Objects.equals(createResume().getSections(), after),
+                        ResumeTestData.class.getDeclaredMethods()[7].getName()
+                );
+                return;
+            }
+            doTest(false, ResumeTestData.class.getDeclaredMethods()[7].getName());
         }
-        Set<Map.Entry<SectionType, Section>> after = resume.getSections();
-        doTest(
-                Objects.equals(createResume().getSections(), after),
-                ResumeTestData.class.getDeclaredMethods()[7].getName()
-        );
     }
 }
