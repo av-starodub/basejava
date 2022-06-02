@@ -16,10 +16,15 @@ import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.creat
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        new ResumeTestData().run();
+        new ResumeTestData().runTests();
+        new ResumeTestData().printResume();
     }
 
-    public void run() {
+    public void printResume() {
+        System.out.println(createResume());
+    }
+
+    public void runTests() {
         checkContactsAddedCorrectly();
         checkSectionsAddedCorrectly();
         checkContactsExtractedCorrectly();
@@ -39,14 +44,16 @@ public class ResumeTestData {
     }
 
     public void checkContactsAddedCorrectly() {
-        doTest(Objects.equals(
-                ContactsCreator.create(), createResume().getContacts()), ResumeTestData.class.getDeclaredMethods()[0].getName()
+        doTest(
+                Objects.equals(ContactsCreator.create(), createResume().getContacts()),
+                ResumeTestData.class.getDeclaredMethods()[0].getName()
         );
     }
 
     public void checkSectionsAddedCorrectly() {
-        doTest(Objects.equals(
-                SectionsCreator.create(), createResume().getSections()), ResumeTestData.class.getDeclaredMethods()[1].getName()
+        doTest(
+                Objects.equals(SectionsCreator.create(), createResume().getSections()),
+                ResumeTestData.class.getDeclaredMethods()[1].getName()
         );
     }
 
@@ -55,8 +62,10 @@ public class ResumeTestData {
         EnumMap<ContactType, String> extracted = new EnumMap<>(ContactType.class) {{
             resume.getContacts().forEach(contact -> this.put(contact.getKey(), contact.getValue()));
         }};
-        doTest(Objects.equals(
-                extracted.entrySet(), resume.getContacts()), ResumeTestData.class.getDeclaredMethods()[2].getName());
+        doTest(
+                Objects.equals(extracted.entrySet(), resume.getContacts()),
+                ResumeTestData.class.getDeclaredMethods()[2].getName()
+        );
     }
 
     public void checkSectionsExtractedCorrectly() {
@@ -64,8 +73,10 @@ public class ResumeTestData {
         EnumMap<SectionType, Section> extracted = new EnumMap<>(SectionType.class) {{
             resume.getSections().forEach(section -> this.put(section.getKey(), section.getValue()));
         }};
-        doTest(Objects.equals(
-                extracted.entrySet(), resume.getSections()), ResumeTestData.class.getDeclaredMethods()[3].getName());
+        doTest(
+                Objects.equals(extracted.entrySet(), resume.getSections()),
+                ResumeTestData.class.getDeclaredMethods()[3].getName()
+        );
     }
 
     public void checkThrowWhenTryToModifySectionsContent() {
@@ -74,7 +85,10 @@ public class ResumeTestData {
             sections.add(new AbstractMap.SimpleEntry<>(PERSONAL, new TextSection()));
             sections.clear();
         } catch (UnsupportedOperationException e) {
-            doTest(Objects.equals(createResume().getSections(), sections), ResumeTestData.class.getDeclaredMethods()[4].getName() + " " + e);
+            doTest(
+                    Objects.equals(createResume().getSections(), sections),
+                    ResumeTestData.class.getDeclaredMethods()[4].getName() + " " + e
+            );
             return;
         }
         doTest(false, ResumeTestData.class.getDeclaredMethods()[4].getName());
@@ -89,8 +103,9 @@ public class ResumeTestData {
                 try {
                     content.add("CHANGE!");
                 } catch (UnsupportedOperationException e) {
-                    doTest(Objects.equals(
-                            createResume().getSections(), sections), ResumeTestData.class.getDeclaredMethods()[5].getName() + " " + e
+                    doTest(
+                            Objects.equals(createResume().getSections(), sections),
+                            ResumeTestData.class.getDeclaredMethods()[5].getName() + " " + e
                     );
                     return;
                 }
@@ -105,7 +120,10 @@ public class ResumeTestData {
             contact.setValue("NEW");
         }
         Set<Map.Entry<ContactType, String>> after = resume.getContacts();
-        doTest(Objects.equals(createResume().getContacts(), after), ResumeTestData.class.getDeclaredMethods()[6].getName());
+        doTest(
+                Objects.equals(createResume().getContacts(), after),
+                ResumeTestData.class.getDeclaredMethods()[6].getName()
+        );
     }
 
     public void checkUnmodifiableSections() {
@@ -114,6 +132,9 @@ public class ResumeTestData {
             section.setValue(new TextSection());
         }
         Set<Map.Entry<SectionType, Section>> after = resume.getSections();
-        doTest(Objects.equals(createResume().getSections(), after), ResumeTestData.class.getDeclaredMethods()[7].getName());
+        doTest(
+                Objects.equals(createResume().getSections(), after),
+                ResumeTestData.class.getDeclaredMethods()[7].getName()
+        );
     }
 }
