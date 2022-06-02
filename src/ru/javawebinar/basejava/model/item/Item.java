@@ -1,32 +1,37 @@
 package ru.javawebinar.basejava.model.item;
 
 import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
+import ru.javawebinar.basejava.model.sections.ListInfoSection;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The class to store information about an organisation in a person's career.
  */
 public class Item {
     private final Header header;
-    private final List<Info> informationBlocks;
+    private final ListInfoSection info;
 
     public Item(EnumMap<HeaderType, String> header, List<Info> info) {
         this.header = new Header() {{
             addAll(Objects.requireNonNull(header));
         }};
-        informationBlocks = new ArrayList<>(Objects.requireNonNull(info));
+        this.info = new ListInfoSection(info);
     }
 
-    public Header getHeader() {
-        return header;
+    /**
+     * @return Collections.unmodifiableSet.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
+    public Set<Map.Entry<HeaderType, String>> getHeader() {
+        return header.getAll();
     }
-
+    /**
+     * @return unmodifiable List.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
     public List<Info> getInfo() {
-        return List.copyOf(informationBlocks);
+        return info.getContent();
     }
 
     @Override
@@ -37,24 +42,18 @@ public class Item {
         Item item = (Item) o;
 
         if (!header.equals(item.header)) return false;
-        return informationBlocks.equals(item.informationBlocks);
+        return info.equals(item.info);
     }
 
     @Override
     public int hashCode() {
         int result = header.hashCode();
-        result = 31 * result + informationBlocks.hashCode();
+        result = 31 * result + info.hashCode();
         return result;
-    }
-
-    private String toStringListInfo() {
-        StringBuilder info = new StringBuilder();
-        informationBlocks.forEach(i -> info.append(i).append("\n"));
-        return info.toString();
     }
 
     @Override
     public String toString() {
-        return header + toStringListInfo();
+        return header + info.toString();
     }
 }

@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
 import java.util.EnumMap;
 
 /**
- * The class is EnumMap type chapter that represent an element in the List<Info> field of Item
+ * The class is EnumMap type chapter that represent an element in the ListInfoSection field of Item
  * to store block of information about person's period of study or work in a particular organization.
  * Search key type - InfoType.
  * Data type - String.
