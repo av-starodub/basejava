@@ -82,7 +82,7 @@ public class ResumeTestData {
     public void checkThrowWhenTryToModifySectionsContent() {
         Set<Map.Entry<SectionType, Section>> sections = createResume().getSections();
         try {
-            sections.add(new AbstractMap.SimpleEntry<>(PERSONAL, new TextSection()));
+            sections.add(new AbstractMap.SimpleEntry<>(PERSONAL, new TextSection("NEW")));
             sections.clear();
         } catch (UnsupportedOperationException e) {
             doTest(
@@ -129,7 +129,7 @@ public class ResumeTestData {
     public void checkUnmodifiableSections() {
         Resume resume = createResume();
         for (Map.Entry<SectionType, Section> section : resume.getSections()) {
-            section.setValue(new TextSection());
+            section.setValue(new TextSection("NEW"));
         }
         Set<Map.Entry<SectionType, Section>> after = resume.getSections();
         doTest(
