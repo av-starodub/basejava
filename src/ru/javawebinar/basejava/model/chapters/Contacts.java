@@ -18,4 +18,9 @@ public class Contacts extends AbstractEnumChapter<ContactType, String> {
     protected String title(ContactType key) {
         return key.getTitle();
     }
+
+    @Override
+    protected String getDefault() {
+        return "";
+    }
 }

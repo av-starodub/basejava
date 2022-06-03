@@ -27,6 +27,13 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
     protected abstract String title(K key);
 
     @Override
+    public V get(K key) {
+        return chapter.getOrDefault(key, getDefault());
+    }
+
+    protected abstract V getDefault();
+
+    @Override
     public void addAll(EnumMap<K, V> items) {
         this.chapter.putAll(Objects.requireNonNull(items));
     }

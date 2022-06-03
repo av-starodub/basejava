@@ -19,4 +19,9 @@ public class Header extends AbstractEnumChapter<HeaderType, String> {
     protected String title(HeaderType key) {
         return key.getTitle();
     }
+
+    @Override
+    protected String getDefault() {
+        return "";
+    }
 }

@@ -20,4 +20,9 @@ public class Info extends AbstractEnumChapter<InfoType, String> {
     protected String title(InfoType key) {
         return key.getTitle();
     }
+
+    @Override
+    protected String getDefault() {
+        return "";
+    }
 }

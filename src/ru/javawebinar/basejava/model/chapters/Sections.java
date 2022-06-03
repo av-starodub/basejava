@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model.chapters;
 
 import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
 import ru.javawebinar.basejava.model.interfaces.Section;
+import ru.javawebinar.basejava.model.sections.TextSection;
 
 import java.util.EnumMap;
 /**
@@ -18,5 +19,10 @@ public class Sections extends AbstractEnumChapter<SectionType, Section> {
     @Override
     protected String title(SectionType key) {
         return key.getTitle();
+    }
+
+    @Override
+    protected Section getDefault() {
+        return new TextSection("");
     }
 }

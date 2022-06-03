@@ -9,5 +9,6 @@ public interface Chapter<K extends Enum<K>, V> {
 
     void addAll(EnumMap<K, V> items);
 
+    V get(K key);
     Set<Map.Entry<K, V>> getAll();
 }
