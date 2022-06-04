@@ -50,7 +50,7 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
 
         AbstractEnumChapter<?, ?> that = (AbstractEnumChapter<?, ?>) o;
 
-        return chapter.equals(that.chapter);
+        return getAll().equals(that.getAll());
     }
 
     @Override

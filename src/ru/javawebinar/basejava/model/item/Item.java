@@ -42,6 +42,8 @@ public class Item {
         Item item = (Item) o;
 
         if (!header.equals(item.header)) return false;
+        if (getInfo().size() != ((Item) o).getInfo().size()) return false;
+
         return info.equals(item.info);
     }
 

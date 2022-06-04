@@ -2,8 +2,13 @@ package ru.javawebinar.basejava.modelDataTest;
 
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
+import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
+import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
 import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
 import ru.javawebinar.basejava.model.interfaces.Section;
+import ru.javawebinar.basejava.model.item.Info;
+import ru.javawebinar.basejava.model.item.Item;
+import ru.javawebinar.basejava.model.sections.ListItemSection;
 import ru.javawebinar.basejava.model.sections.ListStringSection;
 import ru.javawebinar.basejava.model.sections.TextSection;
 import ru.javawebinar.basejava.modelDataTest.creators.ContactsCreator;
@@ -33,6 +38,7 @@ public class ResumeTestData {
         checkThrowWhenTryToModifyListSectionContent();
         checkUnmodifiableContacts();
         checkUnmodifiableSections();
+        checkItemsExtractedCorrectly();
     }
 
     private void doTest(Boolean assertion, String message) {
@@ -139,5 +145,28 @@ public class ResumeTestData {
             }
             doTest(false, ResumeTestData.class.getDeclaredMethods()[9].getName());
         }
+    }
+
+    public void checkItemsExtractedCorrectly() {
+        List<Item> sours = ((ListItemSection) createResume().getSections().get(EDUCATION)).getContent();
+        List<Item> extracted = new ArrayList<>();
+
+        sours.forEach(item -> {
+            EnumMap<HeaderType, String> header = new EnumMap<>(HeaderType.class);
+            item.getHeader().getAll().forEach(entry -> header.put(entry.getKey(), entry.getValue()));
+
+            List<Info> list = new ArrayList<>();
+            EnumMap<InfoType, String> info = new EnumMap<>(InfoType.class);
+            item.getInfo().forEach(blockInfo -> {
+                blockInfo.getAll().forEach(entry -> info.put(entry.getKey(), entry.getValue()));
+                list.add(new Info() {{
+                    addAll(info);
+                }});
+            });
+            extracted.add(new Item(header, list));
+        });
+        doTest(
+                Objects.equals(sours, extracted), ResumeTestData.class.getDeclaredMethods()[10].getName()
+        );
     }
 }

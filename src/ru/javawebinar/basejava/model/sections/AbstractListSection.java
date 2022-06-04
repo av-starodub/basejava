@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
 /**
  * Base class for all types of section which contains List as content.
  *
- * @param <T> any reference data type of section.
+ * @param <T> any reference data type of section. For custom class hashcode() must be override.
  */
 public class AbstractListSection<T> implements Section<List<T>> {
     private final List<T> content;
@@ -28,9 +31,10 @@ public class AbstractListSection<T> implements Section<List<T>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractListSection<?> that = (AbstractListSection<?>) o;
+        List<?> that = ((AbstractListSection<?>) o).getContent();
 
-        return content.equals(that.content);
+        return Objects.equals(content.stream().collect(groupingBy(T::hashCode, counting())),
+                that.stream().collect(groupingBy(Object::hashCode, counting())));
     }
 
     @Override
