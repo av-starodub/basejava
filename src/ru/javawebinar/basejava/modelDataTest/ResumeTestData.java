@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.modelDataTest;
 
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.chapters.Contacts;
 import ru.javawebinar.basejava.model.chapters.Sections;
 import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
 import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
@@ -35,8 +36,8 @@ public class ResumeTestData {
         checkSectionsAddedCorrectly();
         checkContactsExtractedCorrectly();
         checkSectionsExtractedCorrectly();
-        checkThrowWhenTryToModifySectionsContent();
-        checkThrowWhenTryToModifyListSectionContent();
+        checkUnmodifiableSectionContent();
+        checkUnmodifiableListSectionContent();
         checkUnmodifiableContacts();
         checkUnmodifiableSections();
         checkItemsExtractedCorrectly();
@@ -87,7 +88,7 @@ public class ResumeTestData {
         );
     }
 
-    public void checkThrowWhenTryToModifySectionsContent() {
+    public void checkUnmodifiableSectionContent() {
         Set<Map.Entry<SectionType, Section>> sections = createResume().getSections().getAll();
         try {
             sections.add(new AbstractMap.SimpleEntry<>(PERSONAL, new TextSection("NEW")));
@@ -101,14 +102,14 @@ public class ResumeTestData {
         doTest(false, ResumeTestData.class.getDeclaredMethods()[6].getName());
     }
 
-    public void checkThrowWhenTryToModifyListSectionContent() {
-        Resume resume = createResume();
-        ListStringSection ach = (ListStringSection) resume.getSections().get(ACHIEVEMENT);
+    public void checkUnmodifiableListSectionContent() {
+        ListStringSection achievement = (ListStringSection) createResume().getSections().get(ACHIEVEMENT);
         try {
-            ach.getContent().add("CHANGE!");
+            achievement.getContent().add("CHANGE!");
         } catch (UnsupportedOperationException e) {
-            doTest(Objects.equals(
-                    createResume().getSections(), resume.getSections()), ResumeTestData.class.getDeclaredMethods()[7].getName() + " " + e
+            doTest(
+                    Objects.equals(createResume().getSections().get(ACHIEVEMENT), achievement),
+                    ResumeTestData.class.getDeclaredMethods()[7].getName() + " " + e
             );
             return;
         }
@@ -117,13 +118,14 @@ public class ResumeTestData {
 
     public void checkUnmodifiableContacts() {
         Resume resume = createResume();
-        for (Map.Entry<ContactType, String> contact : resume.getContacts().getAll()) {
+        Contacts before = resume.getContacts();
+        for (Map.Entry<ContactType, String> contact : before.getAll()) {
             try {
                 contact.setValue("NEW");
             } catch (UnsupportedOperationException e) {
-                Set<Map.Entry<ContactType, String>> after = resume.getContacts().getAll();
+                Contacts after = resume.getContacts();
                 doTest(
-                        Objects.equals(createResume().getContacts().getAll(), after),
+                        Objects.equals(before, after),
                         ResumeTestData.class.getDeclaredMethods()[8].getName()
                 );
                 return;
@@ -134,13 +136,14 @@ public class ResumeTestData {
 
     public void checkUnmodifiableSections() {
         Resume resume = createResume();
-        for (Map.Entry<SectionType, Section> section : resume.getSections().getAll()) {
+        Sections before = resume.getSections();
+        for (Map.Entry<SectionType, Section> section : before.getAll()) {
             try {
                 section.setValue(new TextSection("NEW"));
             } catch (UnsupportedOperationException e) {
-                Set<Map.Entry<SectionType, Section>> after = resume.getSections().getAll();
+                Sections after = resume.getSections();
                 doTest(
-                        Objects.equals(createResume().getSections().getAll(), after),
+                        Objects.equals(before, after),
                         ResumeTestData.class.getDeclaredMethods()[9].getName()
                 );
                 return;
@@ -174,12 +177,13 @@ public class ResumeTestData {
 
     public void checkUnmodifiableChapterOfResumeWithAddAllChaptersMethod() {
         Resume resume = createResume();
+        Sections before = resume.getSections();
         try {
             resume.getSections().addAll(new EnumMap<>(SectionType.class));
         } catch (UnsupportedOperationException e) {
             Sections after = resume.getSections();
             doTest(
-                    Objects.equals(createResume().getSections(), after),
+                    Objects.equals(before, after),
                     ResumeTestData.class.getDeclaredMethods()[11].getName()
             );
             return;
