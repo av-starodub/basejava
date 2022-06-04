@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.modelDataTest;
 
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.chapters.Sections;
 import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
 import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
 import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
@@ -39,6 +40,7 @@ public class ResumeTestData {
         checkUnmodifiableContacts();
         checkUnmodifiableSections();
         checkItemsExtractedCorrectly();
+        checkUnmodifiableChapterOfResumeWithAddAllChaptersMethod();
     }
 
     private void doTest(Boolean assertion, String message) {
@@ -168,5 +170,20 @@ public class ResumeTestData {
         doTest(
                 Objects.equals(sours, extracted), ResumeTestData.class.getDeclaredMethods()[10].getName()
         );
+    }
+
+    public void checkUnmodifiableChapterOfResumeWithAddAllChaptersMethod() {
+        Resume resume = createResume();
+        try {
+            resume.getSections().addAll(new EnumMap<>(SectionType.class));
+        } catch (UnsupportedOperationException e) {
+            Sections after = resume.getSections();
+            doTest(
+                    Objects.equals(createResume().getSections(), after),
+                    ResumeTestData.class.getDeclaredMethods()[11].getName()
+            );
+            return;
+        }
+        doTest(false, ResumeTestData.class.getDeclaredMethods()[11].getName());
     }
 }

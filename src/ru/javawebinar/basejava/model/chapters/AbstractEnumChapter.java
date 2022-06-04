@@ -35,6 +35,9 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
 
     @Override
     public void addAll(EnumMap<K, V> items) {
+        if (!chapter.isEmpty()) {
+            throw new UnsupportedOperationException("Unable to execute addAll(). The content already exists.");
+        }
         this.chapter.putAll(Objects.requireNonNull(items));
     }
 
