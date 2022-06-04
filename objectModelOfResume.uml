@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/avs/repo/basejava</OriginalElement>
+  <nodes>
+    <node x="876.5405437573194" y="1153.14772946666">ru.javawebinar.basejava.model.sections.ListInfoSection</node>
+    <node x="85.19637146268218" y="982.9263174966607">ru.javawebinar.basejava.model.Resume</node>
+    <node x="553.8324203891488" y="569.9415515127707">ru.javawebinar.basejava.model.item.Info</node>
+    <node x="445.0640160474361" y="1333.4468107507046">ru.javawebinar.basejava.model.enumKeyTypes.SectionType</node>
+    <node x="1148.6658888555194" y="1333.4468107507046">ru.javawebinar.basejava.model.enumKeyTypes.InfoType</node>
+    <node x="1457.7797940772657" y="1333.4468107507046">ru.javawebinar.basejava.model.enumKeyTypes.ContactType</node>
+    <node x="714.1063161550043" y="762.2845748819462">ru.javawebinar.basejava.model.item.Item</node>
+    <node x="1700.3847555032162" y="779.1915978170821">ru.javawebinar.basejava.model.interfaces.Section</node>
+    <node x="1076.5683691322545" y="1030.0988901171502">ru.javawebinar.basejava.model.sections.ListStringSection</node>
+    <node x="1350.8450174878024" y="1153.14772946666">ru.javawebinar.basejava.model.sections.ListItemSection</node>
+    <node x="814.5519836337731" y="1334.0705439567332">ru.javawebinar.basejava.model.enumKeyTypes.HeaderType</node>
+    <node x="-226.37108651059214" y="712.8228680964671">ru.javawebinar.basejava.model.interfaces.Chapter</node>
+    <node x="170.0259485213871" y="711.7592439611533">ru.javawebinar.basejava.model.chapters.Contacts</node>
+    <node x="106.96976159488665" y="367.8673399202822">ru.javawebinar.basejava.model.chapters.AbstractEnumChapter</node>
+    <node x="1241.5992918384156" y="762.2845748819462">ru.javawebinar.basejava.model.sections.AbstractListSection</node>
+    <node x="-269.18543520516016" y="1114.0766537497811">ru.javawebinar.basejava.model.chapters.Sections</node>
+    <node x="1695.243208453774" y="1003.3192042838932">ru.javawebinar.basejava.model.sections.TextSection</node>
+    <node x="386.99965740182733" y="927.9051990903347">ru.javawebinar.basejava.model.item.Header</node>
+    <node x="631.8823702974684" y="1157.6760049205195">ru.javawebinar.basejava.model.interfaces.KeyType</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ru.javawebinar.basejava.model.Resume" target="ru.javawebinar.basejava.model.chapters.Contacts" relationship="TO_ONE">
+      <point x="0.0" y="-202.5" />
+      <point x="209.69637146268218" y="906.342780728907" />
+      <point x="209.6963714626822" y="906.342780728907" />
+      <point x="-86.82957705870493" y="59.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.Resume" target="ru.javawebinar.basejava.model.chapters.Contacts" relationship="CREATE">
+      <point x="86.82957705870493" y="-202.5" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.Resume" target="ru.javawebinar.basejava.model.chapters.Sections" relationship="CREATE">
+      <point x="-124.5" y="2.6503362531204857" />
+      <point x="124.5" y="15.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.chapters.AbstractEnumChapter" target="ru.javawebinar.basejava.model.interfaces.Chapter" relationship="REALIZATION">
+      <point x="-190.5" y="0.0" />
+      <point x="-79.87108651059214" y="517.8673399202821" />
+      <point x="0.0" y="-71.5" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.sections.ListItemSection" target="ru.javawebinar.basejava.model.sections.AbstractListSection" relationship="GENERALIZATION">
+      <point x="-24.86040926419446" y="-31.836280543513794" />
+      <point x="1467.984608223608" y="1098.4558988215235" />
+      <point x="1426.0049058450593" y="1098.4558988215235" />
+      <point x="36.905614006643646" y="98.50005609041375" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.sections.TextSection" target="ru.javawebinar.basejava.model.interfaces.Section" relationship="REALIZATION">
+      <point x="-121.49973748861044" y="2.3242119243604975E-4" />
+      <point x="1655.0" y="1088.3194367050855" />
+      <point x="1655.0" y="811.1915054088303" />
+      <point x="-90.00032943323959" y="-9.240825181677792E-5" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.enumKeyTypes.SectionType" target="ru.javawebinar.basejava.model.interfaces.KeyType" relationship="REALIZATION">
+      <point x="4.98185788273986E-4" y="-85.49981075070468" />
+      <point x="584.0645142332244" y="1270.0" />
+      <point x="705.3825202595561" y="1270.0" />
+      <point x="1.4996208778939035E-4" y="31.99951211996313" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.chapters.Contacts" target="ru.javawebinar.basejava.model.chapters.AbstractEnumChapter" relationship="GENERALIZATION">
+      <point x="126.49962564129234" y="-2.4396115327363077E-4" />
+      <point x="511.0" y="770.759" />
+      <point x="511.0" y="517.8671164274322" />
+      <point x="190.50023840511338" y="-2.2349284995470953E-4" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.item.Header" target="ru.javawebinar.basejava.model.chapters.AbstractEnumChapter" relationship="GENERALIZATION">
+      <point x="3.425981726650207E-4" y="-58.99984502334894" />
+      <point x="511.0" y="517.8671164274322" />
+      <point x="190.50023840511338" y="-2.2349284995470953E-4" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.enumKeyTypes.HeaderType" target="ru.javawebinar.basejava.model.interfaces.KeyType" relationship="REALIZATION">
+      <point x="-1.61382897204021E-4" y="-85.50035515751392" />
+      <point x="953.051822250876" y="1270.0" />
+      <point x="705.3825202595561" y="1270.0" />
+      <point x="1.4996208778939035E-4" y="31.99951211996313" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.sections.ListStringSection" target="ru.javawebinar.basejava.model.sections.AbstractListSection" relationship="GENERALIZATION">
+      <point x="1.3119876211931114E-4" y="32.000386100750234" />
+      <point x="1230.0685003310166" y="1125.0" />
+      <point x="1426.0049058450593" y="1125.0" />
+      <point x="36.905614006643646" y="98.50005609041375" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.enumKeyTypes.InfoType" target="ru.javawebinar.basejava.model.interfaces.KeyType" relationship="REALIZATION">
+      <point x="-4.6780288766967715E-4" y="-85.50026624846487" />
+      <point x="1274.6654210526317" y="1270.0" />
+      <point x="705.3825202595561" y="1270.0" />
+      <point x="1.4996208778939035E-4" y="31.99951211996313" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.item.Item" target="ru.javawebinar.basejava.model.sections.ListInfoSection" relationship="TO_ONE">
+      <point x="15.0" y="124.5" />
+      <point x="956.6063161550043" y="1153.14772946666" />
+      <point x="89.11401801171974" y="-32.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.item.Item" target="ru.javawebinar.basejava.model.item.Header" relationship="TO_ONE">
+      <point x="-227.5" y="100.12062420838845" />
+      <point x="124.0" y="0.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.chapters.Sections" target="ru.javawebinar.basejava.model.sections.TextSection" relationship="CREATE">
+      <point x="0.0" y="59.0" />
+      <point x="-144.68543520516016" y="1594.765266248465" />
+      <point x="1878.2034843001554" y="1594.765266248465" />
+      <point x="61.460275846381364" y="85.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.chapters.Sections" target="ru.javawebinar.basejava.model.chapters.AbstractEnumChapter" relationship="GENERALIZATION">
+      <point x="-9.430042194935595E-5" y="-58.999653749781146" />
+      <point x="-144.6855295055821" y="873.323" />
+      <point x="511.0" y="873.323" />
+      <point x="511.0" y="517.8671164274322" />
+      <point x="190.50023840511338" y="-2.2349284995470953E-4" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.enumKeyTypes.ContactType" target="ru.javawebinar.basejava.model.interfaces.KeyType" relationship="REALIZATION">
+      <point x="-6.522962298309267" y="-86.18484088502396" />
+      <point x="1592.2568317789564" y="1270.0" />
+      <point x="705.3825202595561" y="1270.0" />
+      <point x="1.4996208778939035E-4" y="31.99951211996313" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.item.Item" target="ru.javawebinar.basejava.model.sections.ListInfoSection" relationship="CREATE">
+      <point x="0.0" y="124.5" />
+      <point x="941.6063161550043" y="1153.14772946666" />
+      <point x="74.11401801171974" y="-32.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.Resume" target="ru.javawebinar.basejava.model.chapters.Sections" relationship="TO_ONE">
+      <point x="-124.5" y="-12.349663746879514" />
+      <point x="124.5" y="0.0" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.sections.AbstractListSection" target="ru.javawebinar.basejava.model.interfaces.Section" relationship="REALIZATION">
+      <point x="147.4996140066437" y="5.609041375009838E-5" />
+      <point x="1655.0" y="860.78463097236" />
+      <point x="1655.0" y="811.1915054088303" />
+      <point x="-90.00032943323959" y="-9.240825181677792E-5" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.item.Info" target="ru.javawebinar.basejava.model.chapters.AbstractEnumChapter" relationship="GENERALIZATION">
+      <point x="-111.49992278149324" y="1.7994998472659063E-4" />
+      <point x="511.0" y="628.9417314627555" />
+      <point x="511.0" y="517.8671164274322" />
+      <point x="190.50023840511338" y="-2.2349284995470953E-4" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.sections.ListInfoSection" target="ru.javawebinar.basejava.model.sections.AbstractListSection" relationship="GENERALIZATION">
+      <point x="-2.90736643364653E-5" y="-31.999559419339676" />
+      <point x="1014.540514683655" y="1125.0" />
+      <point x="1426.0049058450593" y="1125.0" />
+      <point x="36.905614006643646" y="98.50005609041375" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.9724699495928655" showDependencies="true" x="968.5000000000001" y="979.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
