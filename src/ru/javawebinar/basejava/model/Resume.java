@@ -7,8 +7,6 @@ import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
 import ru.javawebinar.basejava.model.interfaces.Section;
 
 import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -47,16 +45,16 @@ public class Resume implements Comparable<Resume> {
      * @return Collections.unmodifiableSet.
      * Attempting to modify will result in an UnsupportedOperationException in runtime.
      */
-    public Set<Map.Entry<ContactType, String>> getContacts() {
-        return contacts.getAll();
+    public Contacts getContacts() {
+        return contacts;
     }
 
     /**
      * @return Collections.unmodifiableSet. Lists which contains in ListSections is unmodifiable too.
      * Attempting to modify will result in an UnsupportedOperationException in runtime.
      */
-    public Set<Map.Entry<SectionType, Section>> getSections() {
-        return sections.getAll();
+    public Sections getSections() {
+        return sections;
     }
 
     public void setContacts(EnumMap<ContactType, String> contacts) {
