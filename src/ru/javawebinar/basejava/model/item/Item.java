@@ -23,8 +23,8 @@ public class Item {
      * @return Collections.unmodifiableSet.
      * Attempting to modify will result in an UnsupportedOperationException in runtime.
      */
-    public Set<Map.Entry<HeaderType, String>> getHeader() {
-        return header.getAll();
+    public Header getHeader() {
+        return header;
     }
     /**
      * @return unmodifiable List.
