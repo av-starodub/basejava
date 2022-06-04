@@ -165,7 +165,7 @@ public class ResumeTestData {
             item.getInfo().forEach(blockInfo -> {
                 blockInfo.getAll().forEach(entry -> info.put(entry.getKey(), entry.getValue()));
                 list.add(new Info() {{
-                    addAll(info);
+                    save(info);
                 }});
             });
             extracted.add(new Item(header, list));
@@ -179,7 +179,7 @@ public class ResumeTestData {
         Resume resume = createResume();
         Sections before = resume.getSections();
         try {
-            resume.getSections().addAll(new EnumMap<>(SectionType.class));
+            resume.getSections().save(new EnumMap<>(SectionType.class));
         } catch (UnsupportedOperationException e) {
             Sections after = resume.getSections();
             doTest(

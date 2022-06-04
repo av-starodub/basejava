@@ -21,14 +21,14 @@ public class Education {
                 put(LINK, "https://www.ifmo.ru/");
             }}, new ArrayList<>() {{
                 add(new Info() {{
-                    addAll(new EnumMap<>(InfoType.class) {{
+                    save(new EnumMap<>(InfoType.class) {{
                         put(START, "09/1993");
                         put(END, "07/1996");
                         put(HEADER, "Аспирантура (программист С, С++)");
                     }});
                 }});
                 add(new Info() {{
-                    addAll(new EnumMap<>(InfoType.class) {{
+                    save(new EnumMap<>(InfoType.class) {{
                         put(START, "09/1987");
                         put(END, "07/1993");
                         put(HEADER, "Инженер (программист Fortran, C)");

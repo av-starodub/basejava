@@ -14,7 +14,7 @@ public class Item {
 
     public Item(EnumMap<HeaderType, String> header, List<Info> info) {
         this.header = new Header() {{
-            addAll(Objects.requireNonNull(header));
+            save(Objects.requireNonNull(header));
         }};
         this.info = new ListInfoSection(info);
     }

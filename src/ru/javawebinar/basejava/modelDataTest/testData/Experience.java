@@ -23,7 +23,7 @@ public class Experience {
                     }},
                     new ArrayList<>() {{
                         add(new Info() {{
-                            addAll(new EnumMap<>(InfoType.class) {{
+                            save(new EnumMap<>(InfoType.class) {{
                                 put(START, "10/2013");
                                 put(END, "Сейчас");
                                 put(HEADER, "Автор проекта");

@@ -7,7 +7,7 @@ import java.util.Set;
 public interface Chapter<K extends Enum<K>, V> {
     String getTitle(K key);
 
-    void addAll(EnumMap<K, V> items);
+    void save(EnumMap<K, V> items);
 
     V get(K key);
     Set<Map.Entry<K, V>> getAll();

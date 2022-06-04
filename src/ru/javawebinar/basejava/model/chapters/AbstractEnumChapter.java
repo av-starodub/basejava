@@ -34,7 +34,7 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
     protected abstract V getDefault();
 
     @Override
-    public void addAll(EnumMap<K, V> items) {
+    public void save(EnumMap<K, V> items) {
         if (!chapter.isEmpty()) {
             throw new UnsupportedOperationException("Unable to execute addAll(). The content already exists.");
         }

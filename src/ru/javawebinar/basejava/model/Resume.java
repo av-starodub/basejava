@@ -58,11 +58,11 @@ public class Resume implements Comparable<Resume> {
     }
 
     public void setContacts(EnumMap<ContactType, String> contacts) {
-        this.contacts.addAll(contacts);
+        this.contacts.save(contacts);
     }
 
     public void setSections(EnumMap<SectionType, Section> sections) {
-        this.sections.addAll(sections);
+        this.sections.save(sections);
     }
 
     @Override

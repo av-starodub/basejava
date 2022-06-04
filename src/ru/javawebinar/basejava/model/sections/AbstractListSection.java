@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.groupingBy;
  *
  * @param <T> any reference data type of section. For custom class hashcode() must be override.
  */
-public class AbstractListSection<T> implements Section<List<T>> {
+public abstract class AbstractListSection<T> implements Section<List<T>> {
     private final List<T> content;
 
     protected AbstractListSection(List<T> content) {
