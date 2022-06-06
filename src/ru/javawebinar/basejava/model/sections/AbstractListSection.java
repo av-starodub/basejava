@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.model.sections;
 
 import ru.javawebinar.basejava.model.interfaces.Section;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,18 +11,21 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * Base class for all types of section which contains List as content.
  *
- * @param <T> any reference data type of section. For custom class hashcode() must be override.
+ * @param <T> any reference data type. For custom class T equals and hashcode() must be override.
  */
 public abstract class AbstractListSection<T> implements Section<List<T>> {
     private final List<T> content;
 
     protected AbstractListSection(List<T> content) {
-        this.content = new ArrayList<>(Objects.requireNonNull(content));
+        this.content = checkContent(content);
     }
 
+    private List<T> checkContent(List<T> content) {
+        return Objects.requireNonNull(content).stream().filter(Objects::nonNull).toList();
+    }
     @Override
     public List<T> getContent() {
-        return List.copyOf(content);
+        return content;
     }
 
     @Override

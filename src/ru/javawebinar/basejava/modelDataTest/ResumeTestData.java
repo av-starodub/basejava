@@ -15,6 +15,7 @@ import ru.javawebinar.basejava.model.sections.ListStringSection;
 import ru.javawebinar.basejava.model.sections.TextSection;
 import ru.javawebinar.basejava.modelDataTest.creators.ContactsCreator;
 import ru.javawebinar.basejava.modelDataTest.creators.SectionsCreator;
+import ru.javawebinar.basejava.modelDataTest.testData.Qualifications;
 
 import java.util.*;
 
@@ -42,6 +43,7 @@ public class ResumeTestData {
         checkUnmodifiableSections();
         checkItemsExtractedCorrectly();
         checkUnmodifiableChapterOfResumeWithAddAllChaptersMethod();
+        checkRemoveNullFromConstructorParameterListSection();
     }
 
     private void doTest(Boolean assertion, String message) {
@@ -189,5 +191,16 @@ public class ResumeTestData {
             return;
         }
         doTest(false, ResumeTestData.class.getDeclaredMethods()[11].getName());
+    }
+
+    public void checkRemoveNullFromConstructorParameterListSection() {
+        List<String> qualifications = new ArrayList<>() {{
+            add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
+            add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+            add(null);
+        }};
+        ListStringSection result = new ListStringSection(qualifications);
+        ListStringSection expected = Qualifications.createSection();
+        doTest(Objects.equals(expected, result), ResumeTestData.class.getDeclaredMethods()[12].getName());
     }
 }
