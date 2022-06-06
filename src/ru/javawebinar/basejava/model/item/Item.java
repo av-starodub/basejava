@@ -1,9 +1,15 @@
 package ru.javawebinar.basejava.model.item;
 
+import ru.javawebinar.basejava.model.chapters.AbstractEnumChapter;
 import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
 import ru.javawebinar.basejava.model.sections.ListInfoSection;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.counting;
 
 /**
  * The class to store information about an organisation in a person's career.
@@ -26,6 +32,7 @@ public class Item {
     public Header getHeader() {
         return header;
     }
+
     /**
      * @return unmodifiable List.
      * Attempting to modify will result in an UnsupportedOperationException in runtime.
@@ -42,9 +49,11 @@ public class Item {
         Item item = (Item) o;
 
         if (!header.equals(item.header)) return false;
-        if (getInfo().size() != ((Item) o).getInfo().size()) return false;
+        List<Info> that = item.getInfo();
+        if (info.getContent().size() != that.size()) return false;
 
-        return info.equals(item.info);
+        return Objects.equals(getInfo().stream().collect(Collectors.groupingBy(AbstractEnumChapter::getAll, counting())),
+                that.stream().collect(Collectors.groupingBy(AbstractEnumChapter::getAll, counting())));
     }
 
     @Override

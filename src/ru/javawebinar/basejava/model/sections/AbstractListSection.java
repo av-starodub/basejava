@@ -33,8 +33,8 @@ public abstract class AbstractListSection<T> implements Section<List<T>> {
 
         List<?> that = ((AbstractListSection<?>) o).getContent();
 
-        return Objects.equals(content.stream().collect(groupingBy(T::hashCode, counting())),
-                that.stream().collect(groupingBy(Object::hashCode, counting())));
+        return Objects.equals(content.stream().collect(groupingBy(key -> key, counting())),
+                that.stream().collect(groupingBy(key -> key, counting())));
     }
 
     @Override
