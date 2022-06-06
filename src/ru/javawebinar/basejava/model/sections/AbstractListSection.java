@@ -34,6 +34,7 @@ public abstract class AbstractListSection<T> implements Section<List<T>> {
         if (o == null || getClass() != o.getClass()) return false;
 
         List<?> that = ((AbstractListSection<?>) o).getContent();
+        if (content.size() != that.size()) return false;
 
         return Objects.equals(content.stream().collect(groupingBy(key -> key, counting())),
                 that.stream().collect(groupingBy(key -> key, counting())));
