@@ -1,5 +1,12 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.model.chapters.Contacts;
+import ru.javawebinar.basejava.model.chapters.Sections;
+import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
+import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
+import ru.javawebinar.basejava.model.interfaces.Section;
+
+import java.util.EnumMap;
 import java.util.UUID;
 
 /**
@@ -11,6 +18,10 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
 
+    private final Contacts contacts;
+
+    private final Sections sections;
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
@@ -18,6 +29,8 @@ public class Resume implements Comparable<Resume> {
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
+        contacts = new Contacts();
+        sections = new Sections();
     }
 
     public String getUuid() {
@@ -26,6 +39,30 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
+    }
+
+    /**
+     * @return Collections.unmodifiableSet.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
+    public Contacts getContacts() {
+        return contacts;
+    }
+
+    /**
+     * @return Collections.unmodifiableSet. Lists which contains in ListSections is unmodifiable too.
+     * Attempting to modify will result in an UnsupportedOperationException in runtime.
+     */
+    public Sections getSections() {
+        return sections;
+    }
+
+    public void setContacts(EnumMap<ContactType, String> contacts) {
+        this.contacts.save(contacts);
+    }
+
+    public void setSections(EnumMap<SectionType, Section> sections) {
+        this.sections.save(sections);
     }
 
     @Override
@@ -45,7 +82,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public String toString() {
-        return uuid;
+        return String.format("%s\n%s\n%s\n%s", fullName, uuid, contacts, sections);
     }
 
     @Override
