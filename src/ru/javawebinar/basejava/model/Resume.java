@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
 import ru.javawebinar.basejava.model.interfaces.Section;
 
 import java.util.EnumMap;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -27,8 +28,8 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
-        this.uuid = uuid;
-        this.fullName = fullName;
+        this.uuid = Objects.requireNonNull(uuid, "uuid must not be null");
+        this.fullName = Objects.requireNonNull(fullName, "fullName must not be null");
         contacts = new Contacts();
         sections = new Sections();
     }
@@ -41,18 +42,10 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    /**
-     * @return Collections.unmodifiableSet.
-     * Attempting to modify will result in an UnsupportedOperationException in runtime.
-     */
     public Contacts getContacts() {
         return contacts;
     }
 
-    /**
-     * @return Collections.unmodifiableSet. Lists which contains in ListSections is unmodifiable too.
-     * Attempting to modify will result in an UnsupportedOperationException in runtime.
-     */
     public Sections getSections() {
         return sections;
     }
