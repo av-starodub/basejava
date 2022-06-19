@@ -1,68 +1,72 @@
 package ru.javawebinar.basejava;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 
 public class FileSupplier {
+    private final File workDirectory = new File("./src/ru/javawebinar/basejava");
 
     public static void main(String[] args) {
         new FileSupplier().run();
     }
 
     private void run() {
-        File workDirectory = new File("./src/ru/javawebinar/basejava");
-        printFileNames(getAllFileNames(workDirectory));
-        printSeparator();
-        printFileNames(getAllFileNames(workDirectory, new ArrayList<>()));
-        printSeparator();
-        printStreamAllFileNames(workDirectory);
+        new FileSupplier().printFileNames("RECURSION", sort(getAllFileNamesRecursion(workDirectory)));
+        new FileSupplier().printFileNames("CYCLE", sort(getAllFileNamesInCycle(workDirectory)));
     }
 
-    private void printSeparator() {
-        System.out.println("---------------------------------------");
+    private void printFileNames(String message, List<String> fileNames) {
+        System.out.println(message);
+        System.out.println("------------");
+        fileNames.forEach(System.out::println);
+        System.out.println();
     }
 
-    private void printFileNames(List<String> names) {
-        names.forEach(System.out::println);
+    private List<String> sort(List<String> fileNames) {
+        List<String> names = new ArrayList<>(fileNames);
+        Collections.sort(names);
+        return names;
     }
 
-    private List<String> getAllFileNames(File dir) {
-        List<File> list = new ArrayList<>(List.of(Objects.requireNonNull(dir.listFiles())));
+    private void forEachFile(File dir, Function<File, ?> function) {
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(Path.of(dir.getAbsolutePath()))) {
+            paths.forEach(path -> {
+                File file = path.toFile();
+                if (file.isDirectory()) {
+                    forEachFile(file, function);
+                }
+                if (file.isFile()) {
+                    function.apply(file);
+                }
+            });
+        } catch (IOException e) {
+            System.out.println("Directory read error");
+        }
+    }
+
+    private List<String> getAllFileNamesRecursion(File dir) {
         List<String> fileNames = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            File file = list.get(i);
+        forEachFile(dir, file -> fileNames.add(file.getName()));
+        return fileNames;
+    }
+
+    private List<String> getAllFileNamesInCycle(File dir) {
+        List<String> fileNames = new ArrayList<>();
+        List<File> files = new ArrayList<>(List.of(Objects.requireNonNull(dir.listFiles())));
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
             if (file.isDirectory()) {
-                list.addAll(list.size(), List.of(Objects.requireNonNull(file.listFiles())));
+                files.addAll(files.size(), List.of(Objects.requireNonNull(file.listFiles())));
             }
             if (file.isFile()) {
                 fileNames.add(file.getName());
             }
         }
-        //Collections.sort(fileNames);
         return fileNames;
-    }
-
-    private List<String> getAllFileNames(File dir, List<String> accFileNames) {
-        for (File file : Objects.requireNonNull(dir.listFiles())) {
-            if (file.isDirectory()) {
-                getAllFileNames(file, accFileNames);
-            }
-            if (file.isFile()) {
-                accFileNames.add(file.getName());
-            }
-        }
-        return accFileNames;
-    }
-
-    private void printStreamAllFileNames(File dir) {
-        Arrays.stream(Objects.requireNonNull(dir.listFiles()))
-                .forEach(file -> {
-                    if (file.isDirectory()) {
-                        printStreamAllFileNames(file);
-                    }
-                    if (file.isFile()) {
-                        System.out.println(file.getName());
-                    }
-                });
     }
 }
