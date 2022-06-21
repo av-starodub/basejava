@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.Assert.*;
+import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.createResume;
 
 /**
  * Base class to test all Storage types.
@@ -19,9 +20,9 @@ public abstract class AbstractStorageTest {
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
-        r1 = new Resume("uuid1", "B");
-        r2 = new Resume("uuid2", "C");
-        r3 = new Resume("uuid3", "D");
+        r1 = createResume("uuid1", "B");
+        r2 = createResume("uuid2", "C");
+        r3 = createResume("uuid3", "D");
     }
 
     @Before
