@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -13,8 +14,8 @@ import java.util.Objects;
  */
 public class FileStorage extends AbstractDirectoryStorage<File, File> {
 
-    public FileStorage(File directory) {
-        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")));
+    public FileStorage(File directory, Serializer serializer) {
+        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
     }
 
     private static File checkDirectory(File directory) {

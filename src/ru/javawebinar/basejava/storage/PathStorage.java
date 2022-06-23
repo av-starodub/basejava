@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +17,8 @@ import java.util.Objects;
  */
 public class PathStorage extends AbstractDirectoryStorage<Path, Path> {
 
-    protected PathStorage(String directory) {
-        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")));
+    protected PathStorage(String directory, Serializer serializer) {
+        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
     }
 
     private static Path checkDirectory(String directory) {

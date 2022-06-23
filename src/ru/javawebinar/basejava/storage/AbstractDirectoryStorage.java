@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +19,13 @@ import java.util.function.Function;
  * Type of search key to Storage - File or Path type.
  */
 public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, K> {
+    private final Serializer serializer;
     /**
      * @param storage parameter must be a directory only.
      */
-    protected AbstractDirectoryStorage(T storage) {
+    protected AbstractDirectoryStorage(T storage, Serializer serializer) {
         super(storage);
+        this.serializer = serializer;
     }
 
     /**
@@ -71,7 +74,7 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
     @Override
     protected Resume getResume(K searchKey) {
         try {
-            return doRead(getInputStream(searchKey));
+            return serializer.doRead(getInputStream(searchKey));
         } catch (IOException e) {
             throw new StorageException("File read error ", searchKey.toString(), e);
         }
@@ -82,18 +85,11 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
     @Override
     protected void replace(K searchKey, Resume resume) {
         try {
-            doWrite(resume, getOutputStream(searchKey));
+            serializer.doWrite(resume, getOutputStream(searchKey));
         } catch (IOException e) {
             throw new StorageException("Update error ", searchKey.toString(), e);
         }
     }
 
     protected abstract OutputStream getOutputStream(K searchKey) throws IOException;
-
-    private Resume doRead(InputStream is) throws IOException {
-        return null;
-    }
-
-    private void doWrite(Resume resume, OutputStream os) throws IOException {
-    }
 }
