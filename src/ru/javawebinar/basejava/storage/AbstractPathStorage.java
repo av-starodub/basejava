@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path, Path> {
+public abstract class AbstractPathStorage extends AbstractDirectoryStorage<Path, Path> {
     protected AbstractPathStorage(String directory) {
         super(checkDirectory(directory));
     }
