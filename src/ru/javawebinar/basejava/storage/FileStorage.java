@@ -1,0 +1,85 @@
+package ru.javawebinar.basejava.storage;
+
+import ru.javawebinar.basejava.exception.StorageException;
+import ru.javawebinar.basejava.model.Resume;
+
+import java.io.*;
+import java.nio.file.Path;
+import java.util.Objects;
+
+/**
+ * File type Storage.
+ * Search key type - object File.
+ */
+public class FileStorage extends AbstractDirectoryStorage<File, File> {
+
+    public FileStorage(File directory) {
+        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")));
+    }
+
+    private static File checkDirectory(File directory) {
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
+        }
+        if (!directory.canRead() || !directory.canWrite()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
+        }
+        return directory;
+    }
+
+    @Override
+    protected Path getDirectoryPath() {
+        return Path.of(storage.getAbsolutePath());
+    }
+
+    @Override
+    protected File getKey(Path path) {
+        return path.toFile();
+    }
+
+    @Override
+    protected InputStream getInputStream(File file) throws IOException {
+        return new BufferedInputStream(new FileInputStream(file));
+    }
+
+    @Override
+    protected OutputStream getOutputStream(File file) {
+        try {
+            return new BufferedOutputStream(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new StorageException("File not found", file.getName(), e);
+        }
+    }
+
+    /**
+     * @param file Written @SuppressWarnings("ResultOfMethodCallIgnored") for createNewFile() because the existence
+     *             of the file was already checked in the isResumeExist method before calling the insert method.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Override
+    protected void insert(Resume resume, File file) {
+        try {
+            file.createNewFile();
+            replace(file, resume);
+        } catch (IOException | StorageException e) {
+            throw new StorageException("Save error " + file.getAbsolutePath(), file.getName(), e);
+        }
+    }
+
+    @Override
+    protected void remove(File file) {
+        if (!file.delete()) {
+            throw new StorageException("Delete error " + file.getAbsolutePath(), file.getName());
+        }
+    }
+
+    @Override
+    protected boolean isResumeExist(File file) {
+        return file.exists();
+    }
+
+    @Override
+    protected File getSearchKey(String uuid) {
+        return new File(storage, uuid);
+    }
+}

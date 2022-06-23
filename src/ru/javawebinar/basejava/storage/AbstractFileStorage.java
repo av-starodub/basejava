@@ -18,7 +18,7 @@ import java.util.function.Function;
  * Base class for all FileStorage types.
  * Type of search key to Storage - File. It must be a file only.
  */
-public abstract class AbstractFileStorage extends AbstractDirectoryStorage<File, File> {
+public abstract class AbstractFileStorage extends AbstractStorage<File, File> {
 
     /**
      * @param directory - storage data structure type - File. It must be a directory only.
