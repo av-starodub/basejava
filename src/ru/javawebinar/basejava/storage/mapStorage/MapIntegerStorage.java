@@ -1,4 +1,6 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.mapStorage;
+
+import ru.javawebinar.basejava.storage.mapStorage.AbstractMapStorage;
 
 import java.util.HashMap;
 

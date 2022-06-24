@@ -1,7 +1,8 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.directoryStorage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.directoryStorage.AbstractDirectoryStorage;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.IOException;
