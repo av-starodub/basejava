@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import ru.javawebinar.basejava.storage.arrayStorage.ArrayStorageTest;
 import ru.javawebinar.basejava.storage.arrayStorage.SortedArrayStorageTest;
+import ru.javawebinar.basejava.storage.directoryStorage.ObjectFileStorageTest;
 import ru.javawebinar.basejava.storage.listStorage.ListStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapIntegerStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapResumeStorageTest;
@@ -19,7 +20,8 @@ import ru.javawebinar.basejava.storage.mapStorage.MapUuidStorageTest;
         ListStorageTest.class,
         MapUuidStorageTest.class,
         MapResumeStorageTest.class,
-        MapIntegerStorageTest.class
+        MapIntegerStorageTest.class,
+        ObjectFileStorageTest.class
 })
 public class AllStorageTest {
 }
