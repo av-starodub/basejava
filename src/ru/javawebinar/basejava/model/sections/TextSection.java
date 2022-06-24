@@ -2,12 +2,16 @@ package ru.javawebinar.basejava.model.sections;
 
 import ru.javawebinar.basejava.model.interfaces.Section;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
  * The class to store simple text.
  */
 public class TextSection implements Section<String> {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final String text;
 
     public TextSection(String text) {

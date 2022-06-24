@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model.chapters;
 
 import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
 
+import java.io.Serial;
 import java.util.EnumMap;
 
 /**
@@ -10,6 +11,9 @@ import java.util.EnumMap;
  * Data type - String.
  */
 public class Contacts extends AbstractEnumChapter<ContactType, String> {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public Contacts() {
         super(new EnumMap<>(ContactType.class));
     }

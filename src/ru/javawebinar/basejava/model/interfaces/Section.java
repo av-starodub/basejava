@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model.interfaces;
 
-public interface Section<T> {
+import java.io.Serializable;
+
+public interface Section<T> extends Serializable {
     T getContent();
 }

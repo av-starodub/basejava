@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.model.item;
 import ru.javawebinar.basejava.model.chapters.AbstractEnumChapter;
 import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
 
+import java.io.Serial;
 import java.util.EnumMap;
 
 /**
@@ -12,6 +13,9 @@ import java.util.EnumMap;
  * Data type - String.
  */
 public class Info extends AbstractEnumChapter<InfoType, String> {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public Info() {
         super(new EnumMap<>(InfoType.class));
     }
