@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.storage.directoryStorage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.directoryStorage.AbstractDirectoryStorage;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.util.Objects;
  * Path type Storage.
  * Search key type - object Path.
  */
-public class PathStorage extends AbstractDirectoryStorage<Path, Path> {
+public abstract class PathStorage extends AbstractDirectoryStorage<Path, Path> {
 
     protected PathStorage(String directory, Serializer serializer) {
         super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);

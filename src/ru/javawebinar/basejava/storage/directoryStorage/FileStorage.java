@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.storage.directoryStorage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.directoryStorage.AbstractDirectoryStorage;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.*;
@@ -13,7 +12,7 @@ import java.util.Objects;
  * File type Storage.
  * Search key type - object File.
  */
-public class FileStorage extends AbstractDirectoryStorage<File, File> {
+public abstract class FileStorage extends AbstractDirectoryStorage<File, File> {
 
     public FileStorage(File directory, Serializer serializer) {
         super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
