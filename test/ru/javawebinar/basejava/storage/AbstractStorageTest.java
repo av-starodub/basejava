@@ -8,17 +8,17 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
-import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.createResume;
 
 /**
  * Base class to test all Storage types.
  */
 public abstract class AbstractStorageTest {
-    protected static final File FILE_STORAGE_DIR = new File("/Users/avs/repo/basejava/Storage");
-    protected static final Path PATH__STORAGE_DIR = Path.of("/Users/avs/repo/basejava/Storage");
+    protected static final File FILE_STORAGE_DIR = new File("./Storage");
+    protected static final String  PATH__STORAGE_DIR = "./Storage";
 
     protected final Storage storage;
     protected final Resume r1;
