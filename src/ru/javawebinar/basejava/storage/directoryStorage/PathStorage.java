@@ -49,6 +49,11 @@ public abstract class PathStorage extends AbstractDirectoryStorage<Path, Path> {
     }
 
     @Override
+    protected String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
+
+    @Override
     protected Path getSearchKey(String uuid) {
         return storage.resolve(uuid);
     }
@@ -63,7 +68,7 @@ public abstract class PathStorage extends AbstractDirectoryStorage<Path, Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Delete error" + path.toAbsolutePath(), path.getFileName().toString(), e);
+            throw new StorageException("Delete error" + path.toAbsolutePath(), getFileName(path), e);
         }
     }
 

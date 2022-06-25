@@ -51,6 +51,11 @@ public abstract class FileStorage extends AbstractDirectoryStorage<File, File> {
         }
     }
 
+    @Override
+    protected String getFileName(File file) {
+        return file.getName();
+    }
+
     /**
      * @param file Written @SuppressWarnings("ResultOfMethodCallIgnored") for createNewFile() because the existence
      *             of the file was already checked in the isResumeExist method before calling the insert method.

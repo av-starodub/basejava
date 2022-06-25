@@ -57,7 +57,7 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
             try {
                 Files.delete(path);
             } catch (IOException e) {
-                throw new StorageException("Delete error" + path.toAbsolutePath(), path.toString(), e);
+                throw new StorageException("Delete error" + path.toAbsolutePath(), path.getFileName().toString(), e);
             }
             return null;
         });
@@ -78,7 +78,7 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
         try {
             return serializer.doRead(getInputStream(searchKey));
         } catch (IOException e) {
-            throw new StorageException("File read error ", searchKey.toString(), e);
+            throw new StorageException("File read error ", getFileName(searchKey), e);
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
         try {
             serializer.doWrite(resume, getOutputStream(searchKey));
         } catch (IOException e) {
-            throw new StorageException("Update error ", searchKey.toString(), e);
+            throw new StorageException("Update error ", getFileName(searchKey), e);
         }
     }
 
@@ -101,9 +101,11 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
             createNewFile(searchKey);
             replace(searchKey, resume);
         } catch (IOException | StorageException e) {
-            throw new StorageException("Create file error", searchKey.toString(), e);
+            throw new StorageException("Create file error", getFileName(searchKey), e);
         }
     }
+
+    protected abstract String getFileName(K searchKey);
 
     protected abstract void createNewFile(K searchKey) throws IOException;
 }
