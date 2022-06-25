@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage.directoryStorage;
 
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.IOException;
@@ -64,12 +63,8 @@ public abstract class PathStorage extends AbstractDirectoryStorage<Path, Path> {
     }
 
     @Override
-    protected void remove(Path path) {
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            throw new StorageException("Delete error" + path.toAbsolutePath(), getFileName(path), e);
-        }
+    protected Path getPath(Path path) {
+        return path;
     }
 
     @Override

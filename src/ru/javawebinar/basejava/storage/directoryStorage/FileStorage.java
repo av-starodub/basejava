@@ -67,10 +67,8 @@ public abstract class FileStorage extends AbstractDirectoryStorage<File, File> {
     }
 
     @Override
-    protected void remove(File file) {
-        if (!file.delete()) {
-            throw new StorageException("Delete error " + file.getAbsolutePath(), file.getName());
-        }
+    protected Path getPath(File file) {
+        return file.toPath();
     }
 
     @Override

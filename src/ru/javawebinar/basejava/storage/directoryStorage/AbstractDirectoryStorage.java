@@ -54,11 +54,7 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
     @Override
     public void clear() {
         forEachInDirectoryStream(path -> {
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                throw new StorageException("Delete error" + path.toAbsolutePath(), path.getFileName().toString(), e);
-            }
+            remove(getKey(path));
             return null;
         });
     }
@@ -108,4 +104,15 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
     protected abstract String getFileName(K searchKey);
 
     protected abstract void createNewFile(K searchKey) throws IOException;
+
+    @Override
+    protected void remove(K searchKey) {
+        try {
+            Files.delete(getPath(searchKey));
+        } catch (IOException e) {
+            throw new StorageException("Delete error", getFileName(searchKey), e);
+        }
+    }
+
+    protected abstract Path getPath(K searchKey);
 }
