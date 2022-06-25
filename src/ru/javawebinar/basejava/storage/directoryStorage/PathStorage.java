@@ -13,9 +13,9 @@ import java.util.Objects;
  * Path type Storage.
  * Search key type - object Path.
  */
-public abstract class PathStorage extends AbstractDirectoryStorage<Path, Path> {
+public final class PathStorage extends AbstractDirectoryStorage<Path, Path> {
 
-    protected PathStorage(String directory, Serializer serializer) {
+    public PathStorage(String directory, Serializer serializer) {
         super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
     }
 

@@ -18,7 +18,7 @@ import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.creat
  */
 public abstract class AbstractStorageTest {
     protected static final File FILE_STORAGE_DIR = new File("./Storage");
-    protected static final String  PATH__STORAGE_DIR = "./Storage";
+    protected static final String  PATH_STORAGE_DIR = "./Storage";
 
     protected final Storage storage;
     protected final Resume r1;

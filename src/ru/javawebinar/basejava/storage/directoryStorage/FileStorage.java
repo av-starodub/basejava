@@ -11,7 +11,7 @@ import java.util.Objects;
  * File type Storage.
  * Search key type - object File.
  */
-public abstract class FileStorage extends AbstractDirectoryStorage<File, File> {
+public final class FileStorage extends AbstractDirectoryStorage<File, File> {
 
     public FileStorage(File directory, Serializer serializer) {
         super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
