@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.storage.directoryStorage;
 
 import ru.javawebinar.basejava.exception.StorageException;
-import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
 import java.io.*;
@@ -58,13 +57,8 @@ public abstract class FileStorage extends AbstractDirectoryStorage<File, File> {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    protected void insert(Resume resume, File file) {
-        try {
-            file.createNewFile();
-            replace(file, resume);
-        } catch (IOException | StorageException e) {
-            throw new StorageException("Save error " + file.getAbsolutePath(), file.getName(), e);
-        }
+    protected void createNewFile(File file) throws IOException {
+        file.createNewFile();
     }
 
     @Override

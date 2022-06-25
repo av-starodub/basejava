@@ -21,6 +21,7 @@ import java.util.function.Function;
  */
 public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, K> {
     private final Serializer serializer;
+
     /**
      * @param storage parameter must be a directory only.
      */
@@ -93,4 +94,16 @@ public abstract class AbstractDirectoryStorage<T, K> extends AbstractStorage<T, 
     }
 
     protected abstract OutputStream getOutputStream(K searchKey) throws IOException;
+
+    @Override
+    protected void insert(Resume resume, K searchKey) {
+        try {
+            createNewFile(searchKey);
+            replace(searchKey, resume);
+        } catch (IOException | StorageException e) {
+            throw new StorageException("Create file error", searchKey.toString(), e);
+        }
+    }
+
+    protected abstract void createNewFile(K searchKey) throws IOException;
 }
