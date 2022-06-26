@@ -18,6 +18,7 @@ public class FileSupplier {
     private void run() {
         new FileSupplier().printFileNames("RECURSION", sort(getAllFileNamesRecursion(workDirectory)));
         new FileSupplier().printFileNames("CYCLE", sort(getAllFileNamesInCycle(workDirectory)));
+        new FileSupplier().printDirectoryRepresentation(workDirectory, "");
     }
 
     private void printFileNames(String message, List<String> fileNames) {
@@ -68,5 +69,16 @@ public class FileSupplier {
             }
         }
         return fileNames;
+    }
+
+    private void printDirectoryRepresentation(File dir, String indent) {
+        if (dir != null && dir.exists()) {
+            System.out.println(dir.isFile() ? indent + "f: " + dir.getName() : indent + "dir: " + dir.getName());
+            if (dir.isDirectory()) {
+                for (File subDir : Objects.requireNonNull(dir.listFiles())) {
+                    printDirectoryRepresentation(subDir, indent + "    ");
+                }
+            }
+        }
     }
 }
