@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.storage.arrayStorage.SortedArrayStorageTest;
 import ru.javawebinar.basejava.storage.directoryStorage.ObjectStreamFileDirectoryStorageTest;
 import ru.javawebinar.basejava.storage.directoryStorage.ObjectStreamFileStorageTest;
 import ru.javawebinar.basejava.storage.directoryStorage.ObjectStreamPathDirectoryStorageTest;
+import ru.javawebinar.basejava.storage.directoryStorage.ObjectStreamPathStorageTest;
 import ru.javawebinar.basejava.storage.listStorage.ListStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapIntegerStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapResumeStorageTest;
@@ -25,7 +26,8 @@ import ru.javawebinar.basejava.storage.mapStorage.MapUuidStorageTest;
         MapIntegerStorageTest.class,
         ObjectStreamFileDirectoryStorageTest.class,
         ObjectStreamPathDirectoryStorageTest.class,
-        ObjectStreamFileStorageTest.class
+        ObjectStreamFileStorageTest.class,
+        ObjectStreamPathStorageTest.class
 })
 public class AllStorageTest {
 }
