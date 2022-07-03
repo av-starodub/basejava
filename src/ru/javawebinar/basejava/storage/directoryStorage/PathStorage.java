@@ -1,74 +1,62 @@
 package ru.javawebinar.basejava.storage.directoryStorage;
 
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.AbstractStorage;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
+import java.util.List;
 
-/**
- * Path type Storage.
- * Search key type - object Path.
- */
-public final class PathStorage extends AbstractDirectoryStorage<Path, Path> {
+public class PathStorage extends AbstractStorage<Path, Path> {
+    private final Serializer serializer;
 
-    public PathStorage(String directory, Serializer serializer) {
-        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
-    }
-
-    private static Path checkDirectory(String directory) {
-        Path dir = Path.of(directory);
-        if (!Files.isDirectory(dir) || !Files.isWritable(dir)) {
-            throw new IllegalArgumentException(dir + " is not directory or is not writable");
-        }
-        return dir;
-    }
-
-    @Override
-    protected Path getDirectoryPath() {
-        return storage;
-    }
-
-    @Override
-    protected Path getKey(Path path) {
-        return path;
-    }
-
-    @Override
-    protected InputStream getInputStream(Path path) throws IOException {
-        return Files.newInputStream(path);
-    }
-
-    @Override
-    protected OutputStream getOutputStream(Path path) throws IOException {
-        return Files.newOutputStream(path);
-    }
-
-    @Override
-    protected String getFileName(Path path) {
-        return path.getFileName().toString();
+    protected PathStorage(String directory, Serializer serializer) {
+        super(Path.of(directory));
+        this.serializer = serializer;
     }
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return storage.resolve(uuid);
+        return null;
     }
 
     @Override
-    protected void createNewFile(Path path) throws IOException {
-        Files.createFile(path);
+    protected Resume getResume(Path searchKey) {
+        return null;
     }
 
     @Override
-    protected Path getPath(Path path) {
-        return path;
+    protected List<Resume> getAll() {
+        return null;
     }
 
     @Override
-    protected boolean isResumeExist(Path path) {
-        return Files.exists(path);
+    protected void insert(Resume resume, Path insertKey) {
+
+    }
+
+    @Override
+    protected void replace(Path searchKey, Resume resume) {
+
+    }
+
+    @Override
+    protected void remove(Path searchKey) {
+
+    }
+
+    @Override
+    protected boolean isResumeExist(Path searchKey) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

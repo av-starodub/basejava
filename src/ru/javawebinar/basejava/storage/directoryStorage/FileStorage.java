@@ -1,83 +1,62 @@
 package ru.javawebinar.basejava.storage.directoryStorage;
 
-import ru.javawebinar.basejava.exception.StorageException;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.AbstractStorage;
 import ru.javawebinar.basejava.storage.serializers.Serializer;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.util.Objects;
+import java.io.File;
+import java.util.List;
 
-/**
- * File type Storage.
- * Search key type - object File.
- */
-public final class FileStorage extends AbstractDirectoryStorage<File, File> {
+public class FileStorage extends AbstractStorage<File, File> {
+    private final Serializer serializer;
 
-    public FileStorage(File directory, Serializer serializer) {
-        super(checkDirectory(Objects.requireNonNull(directory, " directory must not be null")), serializer);
-    }
-
-    private static File checkDirectory(File directory) {
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
-        }
-        if (!directory.canRead() || !directory.canWrite()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
-        }
-        return directory;
-    }
-
-    @Override
-    protected Path getDirectoryPath() {
-        return Path.of(storage.getAbsolutePath());
-    }
-
-    @Override
-    protected File getKey(Path path) {
-        return path.toFile();
-    }
-
-    @Override
-    protected InputStream getInputStream(File file) throws IOException {
-        return new BufferedInputStream(new FileInputStream(file));
-    }
-
-    @Override
-    protected OutputStream getOutputStream(File file) {
-        try {
-            return new BufferedOutputStream(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new StorageException("File not found", file.getName(), e);
-        }
-    }
-
-    @Override
-    protected String getFileName(File file) {
-        return file.getName();
-    }
-
-    /**
-     * @param file Written @SuppressWarnings("ResultOfMethodCallIgnored") for createNewFile() because the existence
-     *             of the file was already checked in the isResumeExist method before calling the insert method.
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @Override
-    protected void createNewFile(File file) throws IOException {
-        file.createNewFile();
-    }
-
-    @Override
-    protected Path getPath(File file) {
-        return file.toPath();
-    }
-
-    @Override
-    protected boolean isResumeExist(File file) {
-        return file.exists();
+    protected FileStorage(File storage, Serializer serializer) {
+        super(storage);
+        this.serializer = serializer;
     }
 
     @Override
     protected File getSearchKey(String uuid) {
-        return new File(storage, uuid);
+        return null;
+    }
+
+    @Override
+    protected Resume getResume(File searchKey) {
+        return null;
+    }
+
+    @Override
+    protected List<Resume> getAll() {
+        return null;
+    }
+
+    @Override
+    protected void insert(Resume resume, File insertKey) {
+
+    }
+
+    @Override
+    protected void replace(File searchKey, Resume resume) {
+
+    }
+
+    @Override
+    protected void remove(File searchKey) {
+
+    }
+
+    @Override
+    protected boolean isResumeExist(File searchKey) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }
