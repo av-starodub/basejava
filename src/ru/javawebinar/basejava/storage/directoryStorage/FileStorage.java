@@ -29,6 +29,31 @@ public class FileStorage extends AbstractStorage<File, File> {
         return directory;
     }
 
+    private File[] getListFiles() {
+        var files = storage.listFiles();
+        if (Objects.isNull(files)) {
+            throw new StorageException("Storage read error");
+        }
+        return files;
+    }
+
+    @Override
+    public void clear() {
+        Arrays.stream(getListFiles()).forEach(this::remove);
+    }
+
+    @Override
+    public int size() {
+        return getListFiles().length;
+    }
+
+    @Override
+    protected List<Resume> getAll() {
+        return new ArrayList<>() {{
+            Arrays.stream(getListFiles()).forEach(file -> this.add(getResume(file)));
+        }};
+    }
+
     @Override
     protected File getSearchKey(String uuid) {
         return new File(storage, uuid);
@@ -41,17 +66,6 @@ public class FileStorage extends AbstractStorage<File, File> {
         } catch (IOException e) {
             throw new StorageException("File read error ", file.getName(), e);
         }
-    }
-
-    @Override
-    protected List<Resume> getAll() {
-        var files = storage.listFiles();
-        if (Objects.isNull(files)) {
-            throw new StorageException("Storage read error");
-        }
-        return new ArrayList<>() {{
-            Arrays.stream(files).forEach(file -> this.add(getResume(file)));
-        }};
     }
 
     /**
@@ -88,23 +102,5 @@ public class FileStorage extends AbstractStorage<File, File> {
     @Override
     protected boolean isResumeExist(File file) {
         return file.exists();
-    }
-
-    @Override
-    public void clear() {
-        var files = storage.listFiles();
-        if (Objects.isNull(files)) {
-            throw new StorageException("Storage read error");
-        }
-        Arrays.stream(files).forEach(this::remove);
-    }
-
-    @Override
-    public int size() {
-        var files = storage.listFiles();
-        if (Objects.isNull(files)) {
-            throw new StorageException("Storage read error");
-        }
-        return files.length;
     }
 }
