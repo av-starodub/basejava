@@ -6,6 +6,8 @@ import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
 import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
 import ru.javawebinar.basejava.model.interfaces.Section;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,7 +15,10 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     // Unique identifier
     private final String uuid;
@@ -65,12 +70,20 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        int result = 17;
+        result = 31 * result + uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
+        return result;
     }
 
     @Override

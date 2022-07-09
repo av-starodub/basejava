@@ -4,6 +4,8 @@ import ru.javawebinar.basejava.model.chapters.AbstractEnumChapter;
 import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
 import ru.javawebinar.basejava.model.sections.ListInfoSection;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +16,10 @@ import static java.util.stream.Collectors.counting;
 /**
  * The class to store information about an organisation in a person's career.
  */
-public class Item {
+public class Item implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final Header header;
     private final ListInfoSection info;
 

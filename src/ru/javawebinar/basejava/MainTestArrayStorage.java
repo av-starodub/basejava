@@ -1,15 +1,15 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ArrayStorage;
-import ru.javawebinar.basejava.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.storage.arrayStorage.ArrayStorage;
+import ru.javawebinar.basejava.storage.arrayStorage.SortedArrayStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 import java.util.Arrays;
 
 /**
- * Test for ru.javawebinar.basejava.storage.ArrayStorage
- * ru.javawebinar.basejava.storage.SortedArrayStorage
+ * Test for ru.javawebinar.basejava.storage.arrayStorage.ArrayStorage
+ * ru.javawebinar.basejava.storage.arrayStorage.SortedArrayStorage
  */
 public class MainTestArrayStorage {
     private final Storage ARRAY_STORAGE;

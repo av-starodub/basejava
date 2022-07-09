@@ -1,6 +1,7 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.arrayStorage;
 
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.arrayStorage.AbstractArrayStorage;
 
 import java.util.Arrays;
 import java.util.Comparator;

@@ -1,18 +1,25 @@
 package ru.javawebinar.basejava.storage;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.Assert.*;
+import java.io.File;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.createResume;
 
 /**
  * Base class to test all Storage types.
  */
 public abstract class AbstractStorageTest {
+    protected static final File FILE_STORAGE_DIR = new File("./Storage");
+    protected static final String  PATH_STORAGE_DIR = "./Storage";
+
     protected final Storage storage;
     protected final Resume r1;
     protected final Resume r2;
@@ -27,10 +34,14 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() {
-        storage.clear();
         storage.save(r1);
         storage.save(r2);
         storage.save(r3);
+    }
+
+    @After
+    public void setDown() {
+        storage.clear();
     }
 
     private void compareActualSize(int expectedSize) {
@@ -54,14 +65,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatReturnedListIsSortedByName() {
-        Resume r = new Resume("uuid4", "A");
+        Resume r = createResume("uuid4", "A");
         storage.save(r);
         compareActualArray(r, r1, r2, r3);
     }
 
     @Test
     public void checkThatResumesAreSortedByUuidIfTheirFullNamesMatch() {
-        Resume r = new Resume("uuid0", "C");
+        Resume r = createResume("uuid0", "C");
         storage.save(r);
         compareActualArray(r1, r, r2, r3);
     }
@@ -85,7 +96,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatNonExistentResumeIsAdded() {
-        Resume r = new Resume("uuid4", "D");
+        Resume r = createResume("uuid4", "D");
         storage.save(r);
         assertEquals(r, storage.get("uuid4"));
         compareActualSize(4);
@@ -110,13 +121,13 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void checkThatExistingResumeIsUpdated() {
-        Resume r = new Resume("uuid1", "dummy");
+        Resume r = createResume("uuid1", "dummy");
         storage.update(r);
-        assertSame(r, storage.get("uuid1"));
+        assertEquals(r, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void checkFailureUpdateNonExistentResume() {
-        storage.update(new Resume("dummy"));
+        storage.update(createResume("uuid4", "dummy"));
     }
 }

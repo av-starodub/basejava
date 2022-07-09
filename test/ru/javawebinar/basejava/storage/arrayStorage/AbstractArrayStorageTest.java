@@ -1,8 +1,10 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.arrayStorage;
 
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.AbstractStorageTest;
+import ru.javawebinar.basejava.storage.Storage;
 
 import static org.junit.Assert.fail;
 
