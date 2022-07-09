@@ -21,11 +21,42 @@ public class PathStorage extends AbstractStorage<Path, Path> {
     }
 
     private static Path checkDirectory(String directory) {
-        Path dir = Path.of(directory);
+        var dir = Path.of(directory);
         if (!Files.isDirectory(dir) || !Files.isWritable(dir)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
         return dir;
+    }
+
+    private Stream<Path> getPathStream() {
+        try {
+            return Files.list(storage);
+        } catch (IOException e) {
+            throw new StorageException("Storage read error");
+        }
+    }
+
+    @Override
+    public void clear() {
+        try (var stream = getPathStream()) {
+            stream.forEach(this::remove);
+        }
+    }
+
+    @Override
+    public int size() {
+        try (var stream = getPathStream()) {
+            return (int) stream.count();
+        }
+    }
+
+    @Override
+    protected List<Resume> getAll() {
+        return new ArrayList<>() {{
+            try (var stream = getPathStream()) {
+                stream.forEach(path -> this.add(getResume(path)));
+            }
+        }};
     }
 
     @Override
@@ -40,17 +71,6 @@ public class PathStorage extends AbstractStorage<Path, Path> {
         } catch (IOException e) {
             throw new StorageException("File read error ", path.getFileName().toString(), e);
         }
-    }
-
-    @Override
-    protected List<Resume> getAll() {
-        return new ArrayList<>() {{
-            try (Stream<Path> pathStream = Files.list(storage)) {
-                pathStream.forEach(path -> this.add(getResume(path)));
-            } catch (IOException e) {
-                throw new StorageException("Storage read error");
-            }
-        }};
     }
 
     @Override
@@ -85,23 +105,5 @@ public class PathStorage extends AbstractStorage<Path, Path> {
     @Override
     protected boolean isResumeExist(Path path) {
         return Files.exists(path);
-    }
-
-    @Override
-    public void clear() {
-        try (Stream<Path> pathStream = Files.list(storage)) {
-            pathStream.forEach(this::remove);
-        } catch (IOException e) {
-            throw new StorageException("Storage read error");
-        }
-    }
-
-    @Override
-    public int size() {
-        try (Stream<Path> pathStream = Files.list(storage)) {
-            return (int) pathStream.count();
-        } catch (IOException e) {
-            throw new StorageException("Storage read error");
-        }
     }
 }
