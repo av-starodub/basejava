@@ -20,6 +20,10 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
     }
 
     @Override
+    public int size() {
+        return chapter.size();
+    }
+    @Override
     public String getTitle(K key) {
         return title(key);
     }

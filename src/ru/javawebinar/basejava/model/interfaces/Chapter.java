@@ -12,4 +12,5 @@ public interface Chapter<K extends Enum<K>, V> extends Serializable {
 
     V get(K key);
     Set<Map.Entry<K, V>> getAll();
+    int size();
 }
