@@ -2,14 +2,20 @@ package ru.javawebinar.basejava.storage.serializers;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.chapters.Contacts;
-import ru.javawebinar.basejava.model.chapters.Sections;
 import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
+import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
+import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
 import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
-import ru.javawebinar.basejava.model.interfaces.Section;
+import ru.javawebinar.basejava.model.item.Info;
+import ru.javawebinar.basejava.model.item.Item;
+import ru.javawebinar.basejava.model.sections.ListItemSection;
+import ru.javawebinar.basejava.model.sections.ListStringSection;
+import ru.javawebinar.basejava.model.sections.TextSection;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements Serializer {
@@ -24,17 +30,56 @@ public class DataStreamSerializer implements Serializer {
                     put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
                 }
             }});
-            int sectionSize = dis.readInt();
             resume.setSections(new EnumMap<>(SectionType.class) {{
-                for (int idx = 0; idx < sectionSize; idx++) {
-                    SectionType key = SectionType.valueOf(dis.readUTF());
-                    int length = dis.readInt();
-                    byte[] bytes = dis.readNBytes(length);
-                    put(key, (Section) deserialize(bytes));
-                }
+                put(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
+                put(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
+                int achievementSize = dis.readInt();
+
+                put(SectionType.valueOf((dis.readUTF())), new ListStringSection(new ArrayList<>() {{
+                    for (int idx = 0; idx < achievementSize; idx++) {
+                        add(dis.readUTF());
+                    }
+                }}));
+                int qualificationsSize = dis.readInt();
+                put(SectionType.valueOf(dis.readUTF()), new ListStringSection(new ArrayList<>() {{
+                    for (int idx = 0; idx < qualificationsSize; idx++) {
+                        add(dis.readUTF());
+                    }
+                }}));
+                int experienceSize = dis.readInt();
+                put(SectionType.valueOf(dis.readUTF()), readListItemSectionFromUTF(dis, experienceSize));
+                int educationSize = dis.readInt();
+                put(SectionType.valueOf(dis.readUTF()), readListItemSectionFromUTF(dis, educationSize));
             }});
             return resume;
         }
+    }
+
+    private ListItemSection readListItemSectionFromUTF(DataInputStream dis, int sectionSize) throws IOException {
+        return new ListItemSection(new ArrayList<>() {{
+            for (int idx = 0; idx < sectionSize; idx++) {
+                add(new Item(
+                        new EnumMap<>(HeaderType.class) {{
+                            put(HeaderType.valueOf(dis.readUTF()), dis.readUTF());
+                            put(HeaderType.valueOf(dis.readUTF()), dis.readUTF());
+                        }},
+                        new ArrayList<>() {{
+                            int eduInfoSize = dis.readInt();
+                            for (int idx = 0; idx < eduInfoSize; idx++) {
+                                add(new Info() {{
+                                    save(new EnumMap<>(InfoType.class) {{
+                                        put(InfoType.valueOf(dis.readUTF()), dis.readUTF());
+                                        put(InfoType.valueOf(dis.readUTF()), dis.readUTF());
+                                        put(InfoType.valueOf(dis.readUTF()), dis.readUTF());
+                                        put(InfoType.valueOf(dis.readUTF()), dis.readUTF());
+                                    }});
+                                }});
+                            }
+                        }}
+                ));
+            }
+
+        }});
     }
 
     @Override
@@ -42,19 +87,68 @@ public class DataStreamSerializer implements Serializer {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            Contacts contacts = resume.getContacts();
+            var contacts = resume.getContacts();
             dos.writeInt(contacts.size());
             for (Map.Entry<ContactType, String> entry : contacts.getAll()) {
                 dos.writeUTF(String.valueOf(entry.getKey()));
                 dos.writeUTF(entry.getValue());
             }
-            Sections sections = resume.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.getAll()) {
-                dos.writeUTF(String.valueOf(entry.getKey()));
-                byte[] bytes = serialize(entry.getValue());
-                dos.writeInt(bytes.length);
-                dos.write(bytes);
+            var sections = resume.getSections();
+            TextSection personal = (TextSection) sections.get(SectionType.PERSONAL);
+            String personalContent = personal.getContent();
+            dos.writeUTF(String.valueOf(SectionType.PERSONAL));
+            dos.writeUTF(personalContent);
+            var objective = sections.get(SectionType.OBJECTIVE);
+            String objectiveContent = (String) objective.getContent();
+            dos.writeUTF(String.valueOf(SectionType.OBJECTIVE));
+            dos.writeUTF(objectiveContent);
+            var achievement = (ListStringSection) sections.get(SectionType.ACHIEVEMENT);
+            List<String> achievementContent = achievement.getContent();
+            dos.writeInt(achievementContent.size());
+            dos.writeUTF(String.valueOf(SectionType.ACHIEVEMENT));
+            for (String content : achievementContent) {
+                dos.writeUTF(content);
+            }
+            ListStringSection qualifications = (ListStringSection) sections.get(SectionType.QUALIFICATIONS);
+            List<String> qualificationsContent = qualifications.getContent();
+            dos.writeInt(qualificationsContent.size());
+            dos.writeUTF(String.valueOf(SectionType.QUALIFICATIONS));
+            for (String content : qualificationsContent) {
+                dos.writeUTF(content);
+            }
+            ListItemSection experience = (ListItemSection) sections.get(SectionType.EXPERIENCE);
+            List<Item> expContent = experience.getContent();
+            dos.writeInt(expContent.size());
+            dos.writeUTF(String.valueOf(SectionType.EXPERIENCE));
+            writeItemToUTF(dos, expContent);
+
+            ListItemSection education = (ListItemSection) sections.get(SectionType.EDUCATION);
+            List<Item> eduContent = education.getContent();
+            dos.writeInt(eduContent.size());
+            dos.writeUTF(String.valueOf(SectionType.EDUCATION));
+            writeItemToUTF(dos, eduContent);
+
+        }
+    }
+
+    private void writeItemToUTF(DataOutputStream dos, List<Item> eduContent) throws IOException {
+        for (Item edu : eduContent) {
+            var header = edu.getHeader();
+            dos.writeUTF(String.valueOf(HeaderType.TITLE));
+            dos.writeUTF(header.get(HeaderType.TITLE));
+            dos.writeUTF(String.valueOf(HeaderType.LINK));
+            dos.writeUTF(header.get(HeaderType.LINK));
+            var eduInfo = edu.getInfo();
+            dos.writeInt(eduInfo.size());
+            for (Info ieBlock : eduInfo) {
+                dos.writeUTF(String.valueOf(InfoType.START));
+                dos.writeUTF(ieBlock.get(InfoType.START));
+                dos.writeUTF(String.valueOf(InfoType.END));
+                dos.writeUTF(ieBlock.get(InfoType.END));
+                dos.writeUTF(String.valueOf(InfoType.HEADER));
+                dos.writeUTF(ieBlock.get(InfoType.HEADER));
+                dos.writeUTF(String.valueOf(InfoType.DESCRIPTION));
+                dos.writeUTF(ieBlock.get(InfoType.DESCRIPTION));
             }
         }
     }

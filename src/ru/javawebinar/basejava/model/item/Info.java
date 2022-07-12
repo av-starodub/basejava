@@ -17,7 +17,12 @@ public class Info extends AbstractEnumChapter<InfoType, String> {
     private static final long serialVersionUID = 1L;
 
     public Info() {
-        super(new EnumMap<>(InfoType.class));
+        super(new EnumMap<>(InfoType.class) {{
+            put(InfoType.START, "");
+            put(InfoType.END, "");
+            put(InfoType.HEADER, "");
+            put(InfoType.DESCRIPTION, "");
+        }});
     }
 
     @Override
