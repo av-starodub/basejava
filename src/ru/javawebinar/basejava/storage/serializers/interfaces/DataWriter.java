@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage.serializers;
+package ru.javawebinar.basejava.storage.serializers.interfaces;
 
 import java.io.IOException;
 

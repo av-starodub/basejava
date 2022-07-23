@@ -1,16 +1,12 @@
 package ru.javawebinar.basejava.storage.serializers;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.enumKeyTypes.ContactType;
-import ru.javawebinar.basejava.model.enumKeyTypes.HeaderType;
-import ru.javawebinar.basejava.model.enumKeyTypes.InfoType;
-import ru.javawebinar.basejava.model.enumKeyTypes.SectionType;
-import ru.javawebinar.basejava.model.interfaces.KeyType;
-import ru.javawebinar.basejava.model.item.Info;
-import ru.javawebinar.basejava.model.item.Item;
-import ru.javawebinar.basejava.model.sections.ListItemSection;
-import ru.javawebinar.basejava.model.sections.ListStringSection;
-import ru.javawebinar.basejava.model.sections.TextSection;
+import ru.javawebinar.basejava.model.enumKeyTypes.*;
+import ru.javawebinar.basejava.model.interfaces.*;
+import ru.javawebinar.basejava.model.item.*;
+import ru.javawebinar.basejava.model.sections.*;
+import ru.javawebinar.basejava.storage.serializers.interfaces.*;
 
 import java.io.*;
 import java.util.*;
@@ -24,16 +20,16 @@ public class DataStreamSerializer implements Serializer {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            resume.setContacts(readChapter(dis, ContactType.class));
-            resume.setSections(new EnumMap<>(SectionType.class) {{
-                dis.readInt();
-                put(SectionType.valueOf(dis.readUTF()), readTextSection(dis));
-                put(SectionType.valueOf(dis.readUTF()), readTextSection(dis));
-                put(SectionType.valueOf((dis.readUTF())), readListStringSection(dis, dis.readInt()));
-                put(SectionType.valueOf(dis.readUTF()), readListStringSection(dis, dis.readInt()));
-                put(SectionType.valueOf(dis.readUTF()), readListItemSection(dis, dis.readInt()));
-                put(SectionType.valueOf(dis.readUTF()), readListItemSection(dis, dis.readInt()));
-            }});
+            resume.setContacts(
+                    readChapter(dis, ContactType.class,
+                            () -> getEntry(ContactType.valueOf(dis.readUTF()), dis.readUTF()))
+            );
+            resume.setSections(
+                    readChapter(dis, SectionType.class, () -> {
+                        SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                        return getEntry(sectionType, readSection(dis, sectionType));
+                    })
+            );
             return resume;
         }
     }
@@ -74,7 +70,12 @@ public class DataStreamSerializer implements Serializer {
         return String.valueOf(key);
     }
 
-    private <T> void writeWithThrow(Collection<T> collection, DataOutputStream dos, DataWriter<T> writer) throws IOException {
+    private <K, V> Map.Entry<K, V> getEntry(K key, V value) {
+        return new AbstractMap.SimpleEntry<>(key, value);
+    }
+
+    private <T> void writeWithThrow(Collection<T> collection, DataOutputStream dos, DataWriter<T> writer)
+            throws IOException {
         dos.writeInt(collection.size());
         for (T element : collection) {
             writer.write(element);
@@ -86,42 +87,49 @@ public class DataStreamSerializer implements Serializer {
         dos.writeUTF(value);
     }
 
-    private <K extends Enum<K>> EnumMap<K, String> readChapter(DataInputStream dis, Class<K> key) throws IOException {
+    private Section readSection(DataInputStream dis, SectionType type) throws IOException {
+        switch (type) {
+            case PERSONAL, OBJECTIVE -> {
+                return new TextSection(dis.readUTF());
+            }
+            case ACHIEVEMENT, QUALIFICATIONS -> {
+                return new ListStringSection(readListSection(dis, dis::readUTF));
+            }
+            case EXPERIENCE, EDUCATION -> {
+                return new ListItemSection(
+                        readListSection(dis, () -> new Item(
+                                        readChapter(dis, HeaderType.class,
+                                                () -> getEntry(HeaderType.valueOf(dis.readUTF()), dis.readUTF())
+                                        ),
+                                        readListSection(dis, () -> new Info() {{
+                                            save(readChapter(dis, InfoType.class,
+                                                    () -> getEntry(InfoType.valueOf(dis.readUTF()), dis.readUTF()))
+                                            );
+                                        }})
+                                )
+                        ));
+            }
+        }
+        throw new StorageException("Section read error.");
+    }
+
+    private <K extends Enum<K>, V> EnumMap<K, V> readChapter(DataInputStream dis, Class<K> key, EntryReader<K, V> reader)
+            throws IOException {
         int chapterSize = dis.readInt();
         return new EnumMap<>(key) {{
             for (int idx = 0; idx < chapterSize; idx++) {
-                put(K.valueOf(key, dis.readUTF()), dis.readUTF());
+                Map.Entry<K, V> entry = reader.read();
+                put(entry.getKey(), entry.getValue());
             }
         }};
     }
 
-    private TextSection readTextSection(DataInputStream dis) throws IOException {
-        return new TextSection(dis.readUTF());
-    }
-
-    private ListStringSection readListStringSection(DataInputStream dis, int sectionSize) throws IOException {
-        return new ListStringSection(new ArrayList<>() {{
+    private <T> List<T> readListSection(DataInputStream dis, DataReader<T> reader) throws IOException {
+        int sectionSize = dis.readInt();
+        return new ArrayList<>() {{
             for (int idx = 0; idx < sectionSize; idx++) {
-                add(dis.readUTF());
+                add(reader.read());
             }
-        }});
-    }
-
-    private ListItemSection readListItemSection(DataInputStream dis, int sectionSize) throws IOException {
-        return new ListItemSection(new ArrayList<>() {{
-            for (int idx = 0; idx < sectionSize; idx++) {
-                add(new Item(readChapter(
-                        dis, HeaderType.class),
-                        new ArrayList<>() {{
-                            int infoSize = dis.readInt();
-                            for (int idx = 0; idx < infoSize; idx++) {
-                                add(new Info() {{
-                                    save(readChapter(dis, InfoType.class));
-                                }});
-                            }
-                        }}
-                ));
-            }
-        }});
+        }};
     }
 }

@@ -16,10 +16,7 @@ public class Header extends AbstractEnumChapter<HeaderType, String> {
     private static final long serialVersionUID = 1L;
 
     public Header() {
-        super(new EnumMap<>(HeaderType.class){{
-            put(HeaderType.TITLE, "");
-            put(HeaderType.LINK, "");
-        }});
+        super(new EnumMap<>(HeaderType.class));
     }
 
     @Override
