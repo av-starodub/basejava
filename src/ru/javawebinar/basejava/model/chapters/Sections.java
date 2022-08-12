@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.sections.TextSection;
 
 import java.io.Serial;
 import java.util.EnumMap;
+
 /**
  * The class is EnumMap type chapter of Resume to store different sections with information about person.
  * Search key type - SectionType.

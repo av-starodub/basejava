@@ -20,6 +20,10 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
     }
 
     @Override
+    public int size() {
+        return chapter.size();
+    }
+    @Override
     public String getTitle(K key) {
         return title(key);
     }
@@ -35,9 +39,6 @@ public abstract class AbstractEnumChapter<K extends Enum<K>, V> implements Chapt
 
     @Override
     public void save(EnumMap<K, V> items) {
-        if (!chapter.isEmpty()) {
-            throw new UnsupportedOperationException("Unable to execute addAll(). The content already exists.");
-        }
         this.chapter.putAll(Objects.requireNonNull(items));
     }
 

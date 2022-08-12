@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.storage.directoryStorage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.AbstractStorage;
-import ru.javawebinar.basejava.storage.serializers.Serializer;
+import ru.javawebinar.basejava.storage.serializers.interfaces.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.storage.directoryStorage;
 
-import ru.javawebinar.basejava.storage.serializers.Serializer;
+import ru.javawebinar.basejava.storage.serializers.interfaces.Serializer;
 
 import java.io.IOException;
 import java.io.InputStream;
