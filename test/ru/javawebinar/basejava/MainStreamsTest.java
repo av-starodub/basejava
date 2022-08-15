@@ -2,6 +2,8 @@ package ru.javawebinar.basejava;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 
 public class MainStreamsTest {
@@ -12,7 +14,17 @@ public class MainStreamsTest {
     }
 
     @Test
-    public void shouldReturnTheSmallestPossibleNumberOfUniqueDigits() {
-        assertEquals(123, ms.minValue(new int[]{1,2,3,3,2,3}));
+    public void minValueShouldReturnTheSmallestPossibleNumberOfUniqueDigits() {
+        assertEquals(123, ms.minValue(new int[]{1, 2, 3, 3, 2, 3}));
     }
+
+    @Test
+    public void oddOrEvenShouldRemoveAllOddNumbers() {
+        assertEquals(Arrays.asList(2, 2), ms.oddOrEven(Arrays.asList(2, 2, 1)));;
+    }
+    @Test
+    public void oddOrEvenShouldRemoveAllEvenNumbers() {
+        assertEquals(Arrays.asList(1, 1), ms.oddOrEven(Arrays.asList(2, 2, 1, 1)));;
+    }
+
 }
