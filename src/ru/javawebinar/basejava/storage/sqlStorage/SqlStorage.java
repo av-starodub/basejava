@@ -23,11 +23,10 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume resume) {
         sqlHelper.doAction("UPDATE resume SET full_name=? WHERE uuid=?", preparedStatement -> {
+            String uuid = resume.getUuid();
             preparedStatement.setString(1, resume.getFullName());
-            preparedStatement.setString(2, resume.getUuid());
-            if (isNotExist(preparedStatement)) {
-                throw new NotExistStorageException(resume.getUuid());
-            }
+            preparedStatement.setString(2, uuid);
+            checkResumeExisting(preparedStatement, uuid);
             return null;
         });
     }
@@ -58,9 +57,7 @@ public class SqlStorage implements Storage {
     public void delete(String uuid) {
         sqlHelper.doAction("DELETE FROM resume r WHERE r.uuid =?", preparedStatement -> {
             preparedStatement.setString(1, uuid);
-            if (isNotExist(preparedStatement)) {
-                throw new NotExistStorageException(uuid);
-            }
+            checkResumeExisting(preparedStatement, uuid);
             return null;
         });
     }
@@ -88,7 +85,9 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private boolean isNotExist(PreparedStatement ps) throws SQLException {
-        return ps.executeUpdate() == 0;
+    private void checkResumeExisting(PreparedStatement ps, String uuid) throws SQLException {
+        if (ps.executeUpdate() == 0) {
+            throw new NotExistStorageException(uuid);
+        }
     }
 }
