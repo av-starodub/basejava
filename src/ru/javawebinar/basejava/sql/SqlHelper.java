@@ -17,14 +17,10 @@ public class SqlHelper {
              var prepareStatement = connection.prepareStatement(sql)) {
             return action.action(prepareStatement);
         } catch (SQLException e) {
-            if (isUniqueViolation(e)) {
+            if ("23505".equals(e.getSQLState())) {
                 throw new ExistStorageException(e);
             }
             throw new StorageException(e);
         }
-    }
-
-    private boolean isUniqueViolation(SQLException e) {
-        return "23505".equals(e.getSQLState());
     }
 }
