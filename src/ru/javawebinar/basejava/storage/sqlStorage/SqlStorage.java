@@ -35,13 +35,9 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         sqlHelper.doAction("INSERT INTO resume (uuid, full_name) VALUES (?, ?)", ps -> {
-            try {
-                ps.setString(1, resume.getUuid());
-                ps.setString(2, resume.getFullName());
-                ps.execute();
-            } catch (SQLException e) {
-                throw new ExistStorageException(e);
-            }
+            ps.setString(1, resume.getUuid());
+            ps.setString(2, resume.getFullName());
+            ps.execute();
             return null;
         });
     }
