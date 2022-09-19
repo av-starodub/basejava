@@ -9,6 +9,7 @@ import ru.javawebinar.basejava.storage.listStorage.ListStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapIntegerStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapResumeStorageTest;
 import ru.javawebinar.basejava.storage.mapStorage.MapUuidStorageTest;
+import ru.javawebinar.basejava.storage.sqlStorage.SqlStorageTest;
 
 /**
  * The class to run all Storage tests.
@@ -26,7 +27,8 @@ import ru.javawebinar.basejava.storage.mapStorage.MapUuidStorageTest;
         ObjectStreamFileStorageTest.class,
         ObjectStreamPathStorageTest.class,
         DataStreamFileStorageTest.class,
-        DataStreamPathStorageTest.class
+        DataStreamPathStorageTest.class,
+        SqlStorageTest.class
 })
 public class AllStorageTest {
 }

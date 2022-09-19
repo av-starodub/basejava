@@ -1,8 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -17,8 +17,8 @@ import static ru.javawebinar.basejava.modelDataTest.creators.ResumeCreator.creat
  * Base class to test all Storage types.
  */
 public abstract class AbstractStorageTest {
-    protected static final File FILE_STORAGE_DIR = new File("./Storage");
-    protected static final String  PATH_STORAGE_DIR = "./Storage";
+    protected static final File FILE_STORAGE_DIR = Config.get().getStorageDir();
+    protected static final String PATH_STORAGE_DIR = FILE_STORAGE_DIR.getAbsolutePath();
 
     protected final Storage storage;
     protected final Resume r1;
@@ -34,14 +34,10 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() {
+        storage.clear();
         storage.save(r1);
         storage.save(r2);
         storage.save(r3);
-    }
-
-    @After
-    public void setDown() {
-        storage.clear();
     }
 
     private void compareActualSize(int expectedSize) {
